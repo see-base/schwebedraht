@@ -1,0 +1,7 @@
+*.tmp
+**.tmp
+*.swp
+**.swp
+*.directory
+**.directory
+
