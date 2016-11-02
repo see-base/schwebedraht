@@ -16,3 +16,11 @@ Als "Grafik Engine" kommt der [Info-Beamer](https://info-beamer.com/) zum Einsat
 
 #Software:
 Der Steuerungscode für das Spiel ist in **Python 3** geschrieben, die Anzeigescripts für den info-beamer in **Lua**
+
+#Kontakt:
+Der Hackerspace ist unter [see-base.de](https://see-base.de) zu finden.
+
+Das Entwicklerteam des Schwebedraht ist unter [schwebedraht@see-base.de](mailto:schwebedraht@see-base.de) erreicbar.
+
+#Lizenz: 
+[GNU GENERAL PUBLIC LICENSE](https://raw.githubusercontent.com/see-base/schwebedraht/master/LICENSE)
