@@ -3,6 +3,8 @@ gl.setup(1024, 600)
 --Hintergrund foo
 
 local font = resource.load_font("Lato-Regular.ttf")
+local star = resource.load_image("star.png")
+
 hintergrund_child = "hintergrund" -- Node fuer Hintergrund Bild/Animation/Wasauchimmer
 effekt_child = "effekt" -- Node fuer Effekte bei einem Event
 punkte_child = "punkte" -- Node fuer die Punkteanzeige
@@ -38,5 +40,4 @@ function node.render()
     resource.render_child(hintergrund_child):draw(0, 0, WIDTH, HEIGHT, 1)
     resource.render_child(effekt_child):draw(WIDTH / 2 - width_effekt / 2, HEIGHT / 2 - height_effekt / 2, WIDTH / 2 + width_effekt / 2, HEIGHT / 2 + height_effekt / 2, effekt_sichtbar)
     resource.render_child(punkte_child):draw(256, 0, 768, 130, 1)
-
 end

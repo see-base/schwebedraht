@@ -1,8 +1,17 @@
 gl.setup(1024, 600)
 
-local star = resource.load_image("star.png")
+bildname = "testbild.png"
+
+local bild = resource.load_image(bildname)
+
+util.data_mapper {
+    ["bildname"] = function(value)
+        bild = resource.load_image(value)
+    end
+}
+
 function node.render()
     --gl.clear(0, 1, 1, 1)
-    star:draw(0, 0, WIDTH, HEIGHT)
+    bild:draw(0, 0, WIDTH, HEIGHT)
 
 end

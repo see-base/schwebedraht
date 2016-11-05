@@ -8,29 +8,36 @@ from time import sleep
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.connect(("127.0.0.1", 4444))
 
-def main():
+def set_image(name):
+    #hier kommt noch was rein
+    send_effekt_image(name)
 
-    for p in range(0, 10000):
-        send_punkte(p)
-        sleep(0.01)
+def zoom(in_out):
+    step = 0
 
-        if p % 1000 == 0:
-            zoomin()
-            fadeout()
+    if in_out == 1:
+        wert = 0
+        while wert < 2100:
+            send_effekt_zoom(wert)
+            sleep(0.02)
+            wert += step
+            step += 3
+    elif in_out == 0:
+        wert = 2110
+        while wert > 0:
+            send_effekt_zoom(wert)
+            sleep(0.02)
+            wert -= step
+            step += 3 
 
-def zoomin():
-
+def fade_in():
     wert = 0
-    step = 1
-
-    while wert < 2117: #ausprobierter-wert
-        send_effekt_zoom(wert)
+    for i in range(0, 50):
+        send_effekt_fade(wert)
+        wert = round(wert + 0.02, 2)
         sleep(0.02)
-        wert += step
-        step += 3
 
-def fadeout():
-
+def fade_out():
     wert = 1
     for i in range(0, 50):
         send_effekt_fade(wert)
@@ -45,5 +52,12 @@ def send_effekt_zoom(wert):
 
 def send_effekt_fade(wert):
     sock.send(bytes("medien/effekt_fade:" + str(wert), "UTF-8"))
+def send_effekt_image(wert):
+    sock.send(bytes("medien/effekt/bildname:" + str(wert), "UTF-8"))
 
-main()
+set_image("testbild.png")
+zoom(1)
+fade_out()
+set_image("star.png")
+fade_in()
+zoom(0)
