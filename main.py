@@ -12,23 +12,25 @@ def set_image(name):
     #hier kommt noch was rein
     send_effekt_image(name)
 
-def zoom(in_out):
+def zoom_in():
+    wert = 0
     step = 0
 
-    if in_out == 1:
-        wert = 0
-        while wert < 2100:
-            send_effekt_zoom(wert)
-            sleep(0.02)
-            wert += step
-            step += 3
-    elif in_out == 0:
-        wert = 2110
-        while wert > 0:
-            send_effekt_zoom(wert)
-            sleep(0.02)
-            wert -= step
-            step += 3 
+    while wert < 2110:
+        send_effekt_zoom(wert)
+        sleep(0.02)
+        wert += step
+        step += 3
+
+def zoom_out():
+    wert = 2110
+    step = 0
+
+    while wert > 0:
+        send_effekt_zoom(wert)
+        sleep(0.02)
+        wert -= step
+        step += 3 
 
 def fade_in():
     wert = 0
@@ -52,12 +54,13 @@ def send_effekt_zoom(wert):
 
 def send_effekt_fade(wert):
     sock.send(bytes("medien/effekt_fade:" + str(wert), "UTF-8"))
+
 def send_effekt_image(wert):
     sock.send(bytes("medien/effekt/bildname:" + str(wert), "UTF-8"))
 
 set_image("testbild.png")
-zoom(1)
+zoom_in()
 fade_out()
 set_image("star.png")
 fade_in()
-zoom(0)
+zoom_out()
