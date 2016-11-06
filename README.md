@@ -2,7 +2,7 @@
 Ein Spiel der see-base
 
 #Spielkonzept:
-Das Spiel ist ein [Heißer Draht](https://de.wikipedia.org/wiki/Hei%C3%9Fer_Draht_(Spiel)), der aus verschiedenen Segmenten besteht.
+Das Spiel ist ein [Heißer Draht](https://de.wikipedia.org/wiki/Hei%C3%9Fer_Draht_(Spiel) "Wikipedia"), der aus verschiedenen Segmenten besteht.
 Neben den (größeren) Teilen, die man nicht berühren sollte sind (kleinere) Bonussegmente vorhanden, die einem Punkte geben, die je nach dem, wie viel Zeit man vom letzten Segment benötigt hat variieren. Kombinationen von Bonussegment-Berühungen geben nochmal mehr Punkte.
 Jedes mal, wenn ein Segment berührt wurde erscheint auf einem Display eine Reaktion in Form eines Videos, einer Animation und/oder einem Toneffekt.
 
@@ -16,11 +16,12 @@ Als "Grafik Engine" kommt der [Info-Beamer](https://info-beamer.com/) zum Einsat
 
 #Software:
 Der Steuerungscode für das Spiel ist in **Python 3** geschrieben, die Anzeigescripts für den info-beamer in **Lua**
+Genauere Einzelheiten zu der Schnitstelle zwischen dem Info-Beamer und dem Spiel gibt es [hier](https://github.com/see-base/schwebedraht/blob/master/medien/Readme.md "medien/Readme.md").
 
 #Kontakt:
-Der Hackerspace ist unter [see-base.de](https://see-base.de) zu finden.
+Unser Hackerspace ist unter [see-base.de](https://see-base.de) zu finden.
 
 Das Entwicklerteam des Schwebedraht ist unter [schwebedraht@see-base.de](mailto:schwebedraht@see-base.de) erreicbar.
 
 #Lizenz: 
-[GNU GENERAL PUBLIC LICENSE](https://raw.githubusercontent.com/see-base/schwebedraht/master/LICENSE)
+[GENERAL PUBLIC LICENSE](https://raw.githubusercontent.com/see-base/schwebedraht/master/LICENSE)

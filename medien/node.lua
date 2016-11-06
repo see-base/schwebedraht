@@ -13,11 +13,6 @@ effekt_sichtbar = 0
 width_effekt = 0
 height_effekt = 0
 
-util.data_mapper { -- Empfaengt einen Wrt von main.py
-    ["titel_sichtbar"] = function(value)
-        titel_sichtbar = value
-    end
-}
 util.data_mapper {
     ["effekt_fade"] = function(value)
         effekt_sichtbar = value
