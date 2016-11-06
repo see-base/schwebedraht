@@ -3,6 +3,7 @@ gl.setup(1024, 600)
 --Hintergrund foo
 
 local font = resource.load_font("Lato-Regular.ttf")
+local star = resource.load_image("star.png")
 
 hintergrund_child = "hintergrund" -- Node fuer Hintergrund Bild/Animation/Wasauchimmer
 effekt_child = "effekt" -- Node fuer Effekte bei einem Event
