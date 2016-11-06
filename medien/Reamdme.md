@@ -13,12 +13,25 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.connect(("127.0.0.1", 4444))
 # Variablen uebergeben
 wert=42 #Wert als Variable anlegen
-sock.send(bytes("medien/punkte/punkte:" + str(wert), "UTF-8")) #An das Child Node 'punkte' vom Haupt Node "medien" an die Variable "punkte" der Inhalt der Variable $wert" gesendet.
+sock.send(bytes("medien/punkte/punkte:" + str(wert), "UTF-8")) 
+# An das Child Node 'punkte' vom Haupt Node "medien" an die
+# Variable "punkte" der Inhalt der Variable $wert (42) gesendet.
 
 ``` 
 
 ##Aufbau info-beamer
-Der Info-Beamer ist in mehrere Nodes aufgeteilt:
+Der Info-Beamer ist in mehrere Nodes aufgeteilt. Jeder Node hat theoretisch die möglichkeit beliebig viele Variabeln via  UDP von dem Python Programm zu empfangen.
+Dieses Setup sieht beispielsweise so aus:
+```lua
+gl.setup(1024, 600) --Bildschirmgroesse
+punkte = 0 --Variable $punkte
+util.data_mapper { --Daten via UDP Empfangen
+    ["punkte"] = function(value) --an die Variable $punkte wird ein Wert uebergeben
+        punkte = value  --Die Variable punkte im info-beamer hat den von Python uebergebenen Wert
+    end
+}
+
+```
 
 ###medien
 Der **Master Node** der gesamten Grafik. Quasi das **root** des info-beamers. Hier wird bestimmt was angezeigt werden soll und welche Child Nodes sichtbar sein sollen.
