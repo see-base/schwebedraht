@@ -6,3 +6,7 @@
 **.directory
 *.*~
 **.*~
+*.lua.un~
+**.lua.un~
+*.lua~
+**.lua~
