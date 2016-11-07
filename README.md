@@ -1,5 +1,8 @@
-# schwebedraht
+# Schwebedraht
 Ein Spiel der see-base
+
+![Cyber](https://see-base.de/file/2016/03/19/IMG_20160319_161949_2.jpg "Schwebedraht")
+
 
 #Spielkonzept:
 Das Spiel ist ein [Heißer Draht](https://de.wikipedia.org/wiki/Hei%C3%9Fer_Draht_(Spiel) "Wikipedia"), der aus verschiedenen Segmenten besteht.
