@@ -27,4 +27,4 @@ Jedes der Segmente ist über GPIO mit dem Raspberry Pi verbunden. Dadurch werden 
  
 
 ##Programierung:
-Python3 ist eine sehr Hardware nahe Sprace und gerade am Raspberry Pi genau richtig um schnell und einfach auf die GPIOs zuzugreifen.
+Python3 ist eine sehr Hardware nahe Sprache und gerade am Raspberry Pi genau richtig um schnell und einfach auf die GPIOs zuzugreifen.

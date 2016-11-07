@@ -17,6 +17,7 @@ An den Raspberry Pi ist ein Display und zwei kleine Lautsprecher angeschlossen.
 
 #Grafik:
 Als "Grafik Engine" kommt der [Info-Beamer](https://info-beamer.com/) zum Einsatz, der durch seinen modularen Aufbau sehr einfach anzupassen ist und dabei noch performant bleibt.
+[Installationsanleitung](https://info-beamer.com/doc/info-beamer#raspberrypiversion) von info-beamer auf dem `Raspberry Pi`.
 
 #Software:
 Der Steuerungscode für das Spiel ist in **Python 3** geschrieben, die Anzeigescripts für den info-beamer in **Lua**
