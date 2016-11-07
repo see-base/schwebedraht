@@ -23,7 +23,9 @@ Der Steuerungscode für das Spiel ist in **Python 3** geschrieben, die Anzeigesc
 
 #Schnitstellen
 [Dokumentation](https://github.com/see-base/schwebedraht/blob/master/medien/README.md "medien/README.md"). zur Schnitstelle zwischen Info-Beamer und Python3 Spiel.
+
 [Dokumentation](https://github.com/see-base/schwebedraht/blob/master/GPIO.md "GPIO.md") zur technischen Verkabelung der GPIOs zwischen Spielehardware und Raspberry Pi.
+
 
 #Kontakt:
 Unser Hackerspace ist unter [see-base.de](https://see-base.de) zu finden.

@@ -1,4 +1,5 @@
-#Schnitstelle zwischen der Spielehardware und dem Raspberry PI
+#Schnitstelle
+##zwischen der Spielehardware und dem Raspberry PI
 
 #Spielkonzept:
 Das Spiel ist ein [Heiﬂer Draht](https://de.wikipedia.org/wiki/Hei%C3%9Fer_Draht_(Spiel) "Wikipedia"), der aus verschiedenen Segmenten besteht.
