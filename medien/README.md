@@ -37,11 +37,20 @@ util.data_mapper { --Daten via UDP Empfangen
 
 ###medien
 Der **Master Node** der gesamten Grafik. Quasi das **root** des info-beamers. Hier wird bestimmt was angezeigt werden soll und welche Child Nodes sichtbar sein sollen.
+Das Python script kann durch das anpassen der unten stehenden Variabeln den Effekt vorbereiten und durch setzen der variabel "zoom" den Zoom-Vorgang starten.
 
-| Variabel-Name    | Wert            | Default | Funktion  |
-| ---------------- |:---------------:| :-----: | ----------|
-| `effekt_fade`    | 0.0 - 1.0       | `0`     | Alpha Wert des Child Node `effekt` |
-| `effekt_zoom`    | *beliebige Zahl*| `0`     | Groesse des Child Node `effekt`    |
+
+| Variabel-Name    | Wert              | Default | Funktion                                 |
+| ---------------- |:---------------:  | :-----: | ----------                               |
+| `effekt_fade`    | 0.0 - 1.0         | `0`     | Alpha Wert des Child Node `effekt`       |
+| `zoom`           | *positive Zahl*   | `0`     | Groesse des Child Node `effekt`          |
+| `zoom_multipler` | *beliebige Zahl*  | `2`     | Geschwindigkeit beim Zoomen des Child Node `effekt`        |
+| `zoom_exponential`| *beliebige Zahl* | `0`     | Exponentiale Größe des zoomenden Child Node `effekt`     |
+| `zoom_option`     | `plus`/`minus`   | `plus`  | Child Node `effekt` vergrößern oder kleiner werden lassen|
+| `zoom_fade`       | `1`, `2` oder `3`| `1`     | Verschiedene Modi um die Zeit nach dem das Child Node `effekt` ausgeblendet wird eingestellt wird  |
+| `zoom_fade_option`| *positive Zahl*  | `0.05`  | Geschwindigkeit des ausblenden des Child Node `effekt`     |
+
+Leider noch nicht volständig ausgereift :-(
 
 ##hintergrund
 Das **Child Node**, welches für den Hintergrund in unserem Spiel zuständig ist.

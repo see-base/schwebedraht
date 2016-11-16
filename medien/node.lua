@@ -10,8 +10,16 @@ punkte_child = "punkte" -- Node fuer die Punkteanzeige
 
 effekt_sichtbar = 0
 
-width_effekt = 0
-height_effekt = 0
+zoom = 0
+zoom_option = "plus"
+z_option = 1 -- 0 for minus
+zoom_multipler = 2
+zoom_exponential = 0
+zoom_expo = 0
+z_fade = 2.3
+zoom_fade = 1 --optionen fuer effektlaenge
+zoom_fade_option = 0.05
+starttime = 0
 
 util.data_mapper {
     ["effekt_fade"] = function(value)
@@ -19,10 +27,54 @@ util.data_mapper {
     end
 }
 util.data_mapper {
-    ["effekt_zoom"] = function(value)
+    ["zoom"] = function(value)
+        value= tonumber(value)
+        zoom = value
         effekt_sichtbar = 1
-        width_effekt = value
-        height_effekt = value
+        zoom_expo = 0 
+        starttime = sys.now()
+    end
+}
+util.data_mapper {
+    ["zoom_multipler"] = function(value)
+        zoom_multipler = value
+        effekt_sichtbar = 0
+    end
+}
+util.data_mapper {
+    ["zoom_exponential"] = function(value)
+        zoom_exponential = value
+        effekt_sichtbar = 0
+    end
+}
+util.data_mapper {
+    ["zoom_option"] = function(value)
+        zoom_option = value
+        effekt_sichtbar = 0
+        if zoom_option == "plus" then
+             z_option = 1
+        else
+             z_option = 0
+        end
+    end
+}
+util.data_mapper {
+    ["zoom_fade"] = function(value)
+        zoom_fade = value
+        effekt_sichtbar = 0
+        if zoom_fade == "1" then
+            z_fade = 2.3
+        elseif zoom_fade == "2" then
+            z_fade = 4.2
+        else
+            z_fade = 1
+        end
+    end
+}
+util.data_mapper {
+    ["zoom_fade_option"] = function(value)
+        zoom_fade_option = value + 0.1
+        effekt_sichtbar = 0
     end
 }
 
@@ -30,8 +82,20 @@ util.data_mapper {
 function node.render()
     gl.clear(0, 0, 0, 1) -- schwarzer hintergrund
 
+-- zoom = 0
+--zoom_option = "plus"
+--zoom_multipler = 1
+--zoom_exponential = 0
+--zoom_fade = 4232
+   --Effekte:
+    zoom = zoom + (sys.now() - starttime) * (zoom_multipler + zoom_expo)
+    if ((sys.now() - starttime) > z_fade) then
+        effekt_sichtbar=math.floor(100*(effekt_sichtbar - zoom_fade_option))/100
+    end    
+    zoom_expo = zoom_expo + zoom_exponential
+    
     -- Laden der Child-Objekte
     resource.render_child(hintergrund_child):draw(0, 0, WIDTH, HEIGHT, 1)
-    resource.render_child(effekt_child):draw(WIDTH / 2 - width_effekt / 2, HEIGHT / 2 - height_effekt / 2, WIDTH / 2 + width_effekt / 2, HEIGHT / 2 + height_effekt / 2, effekt_sichtbar)
+    resource.render_child(effekt_child):draw(WIDTH / 2 - zoom / 2, HEIGHT / 2 - zoom / 2, WIDTH / 2 + zoom / 2, HEIGHT / 2 + zoom / 2, effekt_sichtbar)
     resource.render_child(punkte_child):draw(256, 0, 768, 130, 1)
 end
