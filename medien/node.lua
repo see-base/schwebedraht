@@ -12,10 +12,12 @@ effekt_sichtbar = 0
 
 zoom = 0
 zoom_option = "plus"
+z_option = 1 -- 0 for minus
 zoom_multipler = 2
 zoom_exponential = 0
 zoom_expo = 0
-zoom_fade = 2.3
+z_fade = 2.3
+zoom_fade = 1 --optionen fuer effektlaenge
 zoom_fade_option = 0.05
 starttime = 0
 
@@ -49,12 +51,24 @@ util.data_mapper {
     ["zoom_option"] = function(value)
         zoom_option = value
         effekt_sichtbar = 0
+        if zoom_option == "plus" then
+             z_option = 1
+        else
+             z_option = 0
+        end
     end
 }
 util.data_mapper {
     ["zoom_fade"] = function(value)
         zoom_fade = value
         effekt_sichtbar = 0
+        if zoom_fade == "1" then
+            z_fade = 2.3
+        elseif zoom_fade == "2" then
+            z_fade = 4.2
+        else
+            z_fade = 1
+        end
     end
 }
 util.data_mapper {
@@ -75,7 +89,7 @@ function node.render()
 --zoom_fade = 4232
    --Effekte:
     zoom = zoom + (sys.now() - starttime) * (zoom_multipler + zoom_expo)
-    if (sys.now() - starttime) > zoom_fade then
+    if ((sys.now() - starttime) > z_fade) then
         effekt_sichtbar=math.floor(100*(effekt_sichtbar - zoom_fade_option))/100
     end    
     zoom_expo = zoom_expo + zoom_exponential
