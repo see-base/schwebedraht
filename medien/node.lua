@@ -82,11 +82,6 @@ util.data_mapper {
 function node.render()
     gl.clear(0, 0, 0, 1) -- schwarzer hintergrund
 
--- zoom = 0
---zoom_option = "plus"
---zoom_multipler = 1
---zoom_exponential = 0
---zoom_fade = 4232
    --Effekte:
     zoom = zoom + (sys.now() - starttime) * (zoom_multipler + zoom_expo)
     if ((sys.now() - starttime) > z_fade) then
