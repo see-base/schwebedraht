@@ -46,8 +46,8 @@ Das Python script kann durch das anpassen der unten stehenden Variabeln den Effe
 | `zoom`           | *positive Zahl*  | `0`     | Groesse des Child Node `effekt`    |
 | `zoom_multipler` | *beliebige Zahl* | `2`     | Geschwindigkeit beim Zoomen des Child Node `effekt`      |
 | `zoom_exponential`| *beliebige Zahl* |`0`     | Exponentiale Größe des zoomenden Child Node `effekt`     |
-| `zoom_option`    | plus/minus       | `plus`  | Child Node `effekt` vergrößern oder kleiner werden lassen|
-| `zoom_fade`      | *positive Zahl*  |`2.3`    | Zeit nach dem das Child Node `effekt` ausgeblendet wird  |
+| `zoom_option`     | `plus`/`minus`  | `plus`  | Child Node `effekt` vergrößern oder kleiner werden lassen|
+| `zoom_fade`       | *positive Zahl* |`2.3`    | Zeit nach dem das Child Node `effekt` ausgeblendet wird  |
 | `zoom_fade_option`| *positive Zahl* |`0.05`   | Geschwindigkeit des ausblenden des Child Node `effekt`   |
 
 Leider noch nicht volständig ausgereift :-(
