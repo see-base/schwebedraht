@@ -26,6 +26,7 @@ segmente = {
     "ende": [37]
 }
 zeitenListe = []
+debug = False
 
 # komandozeilenargumente
 for i in argv:
@@ -34,17 +35,22 @@ for i in argv:
         print("Quelle: https://github.com/see-base/schwebedraht\n\n")
         print("Moegliche Befehle:\n\t--help\t- Zeigt diese Hilfe an")
         print("\t-v\t- Zeigt die Version des Spieles")
-        print("\t...")
+        print("\t--debug\t- Debug Modus...")
+        print("\t")
         print("\n")
         exit()
     elif i == "-v":
         print("\n{0} - {1}\n\nVersion:\t{2}\n".format(spielName, spielNameZusatz, version))
         exit()
+    elif i == "--debug":
+        debug = True
+
 
 def main():
     while True:
         for key, value in segmente.items():
             for pin in value:
+                if debug: print("main():for key, value in segmente.items():for pin in value:pin = "+str(pin))
                 if not GPIO.input(pin):
                     get_time(key, pin)
                     if key == "start":
@@ -84,9 +90,5 @@ def fail():
     sock.send(bytes("medien/effekt/bildname:" + str("pesthorn.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
     
-#main()
-while True:
-    bonus()
-    sleep(3)
-    fail()
-    sleep(3)
+main()
+
