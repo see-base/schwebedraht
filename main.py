@@ -32,13 +32,13 @@ demo = False
 #gpios einstellen
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-for key, value in segmente:
+for key, value in segmente.items():
 	GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # komandozeilenargumente
 for i in argv:
     if i in ["--help", "-h", "/h", "/help", "?", "h"]:
-        print("\n"+spielName+" - "+spielNameZusatz+"\n")
+        print("\n{0} - \n".format(spielName, spielNameZusatz))
         print("Quelle: https://github.com/see-base/schwebedraht\n\n")
         print("Moegliche Befehle:\n\t--help\t- Zeigt diese Hilfe an")
         print("\t-v\t- Zeigt die Version des Spieles")
@@ -58,41 +58,46 @@ def main():
     while True:
         for key, value in segmente.items():
             for pin in value:
-                if debug: print("main():for key, value in segmente.items():for pin in value:pin = "+str(pin))
                 if not GPIO.input(pin):
+                    if debug: print("\nPin {} wurde berührt | Key = {}".format(pin, key))
                     get_time(key, pin)
                     if key == "start":
                         start()
                     elif key == "bonus":
-                        pass
+                        bonus()
                     elif key == "fail":
-                        pass
+                        fail()
                     elif key == "ende":
-                        pass
+                        ende()
+                    sleep(0.1)
 
 def get_time(name, pin):
     global startzeit
 
     if name == "start": startzeit = time()
-    else: zeitenListe.append((pin, time()))
+    else: zeitenListe.append((pin, time() - startzeit))
+    if debug: print("Zeitstempel:", time() - startzeit)
 
 def start():
-    sock.send(bytes("medien/effektderpunkteausblendetderbaldkommt:" + str(True), "UTF-8"))
+    if debug: print("start()")
     #effekt_countdown_Spielstart
 
 def ende():
+    if debug: print("ende()")
     # Statistiken fuer das Ende
     # Genaue Aufschl�sselung des extrem komplizierten und geilen Punktesystem
     pass
-    # zur�cksetzen
+    # zurücksetzen
 
 def bonus():
+    if debug: print("bonus()")
     # Ein Sternchen *bling* effekt
     sock.send(bytes("medien/zoom_exponential:" + str(1), "UTF-8"))
     sock.send(bytes("medien/effekt/bildname:" + str("star.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
 
 def fail():
+    if debug: print("fail()")
     # Ein Sternchen *bling* effekt
     sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
     sock.send(bytes("medien/effekt/bildname:" + str("pesthorn.png"), "UTF-8"))
@@ -100,24 +105,13 @@ def fail():
 
 if demo:
     while True:
-        sock.send(bytes("medien/punkte/punkte:start", "UTF-8"))
-        sleep(5)
-        if debug: print("start()")
-        start()
-        sock.send(bytes("medien/punkte/punkte:start", "UTF-8"))
-        sleep(5)
-        if debug: print("bonus()")
-        bonus()
-        sock.send(bytes("medien/punkte/punkte:42", "UTF-8"))
-        sleep(5)
-        if debug: print("fail()")
-        fail()
-        sock.send(bytes("medien/punkte/punkte:1337", "UTF-8"))
-        sleep(5)
-        if debug: print("ende")
-        sock.send(bytes("medien/punkte/punkte:ende", "UTF-8"))
-        ende()
-        sleep(5)
+        for s in ["start", "42", "1337", "ende"]:
+            sock.send(bytes("medien/punkte/punkte:" + s, "UTF-8"))
+            if s == "start": start()
+            elif s == "42": bonus()
+            elif s == "1337": fail()
+            elif s == "ende": ende()
+            sleep(5)
 
 else:
     main()

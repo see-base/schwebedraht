@@ -80,7 +80,7 @@ util.data_mapper {
 
 --Rendere den Infobeamer   
 function node.render()
-    gl.clear(0, 0, 0, 1) -- schwarzer hintergrund
+    gl.clear(1, 0, 0, 1) -- schwarzer hintergrund
 
    --Effekte:
     zoom = zoom + (sys.now() - starttime) * (zoom_multipler + zoom_expo)
