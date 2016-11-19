@@ -27,6 +27,7 @@ segmente = {
 }
 zeitenListe = []
 debug = False
+demo = False
 
 # komandozeilenargumente
 for i in argv:
@@ -36,7 +37,7 @@ for i in argv:
         print("Moegliche Befehle:\n\t--help\t- Zeigt diese Hilfe an")
         print("\t-v\t- Zeigt die Version des Spieles")
         print("\t--debug\t- Debug Modus...")
-        print("\t")
+        print("\t--demo\t- Demo Modus")
         print("\n")
         exit()
     elif i == "-v":
@@ -44,7 +45,8 @@ for i in argv:
         exit()
     elif i == "--debug":
         debug = True
-
+    elif i == "--demo":
+        demo = True
 
 def main():
     while True:
@@ -90,5 +92,26 @@ def fail():
     sock.send(bytes("medien/effekt/bildname:" + str("pesthorn.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
     
-main()
+if demo:
+    while True:
+        sock.send(bytes("medien/punkte/punkte:start", "UTF-8"))
+        sleep(5)
+        if debug: print("start()")
+        start()
+        sock.send(bytes("medien/punkte/punkte:start", "UTF-8"))
+        sleep(5)
+        if debug: print("bonus()")
+        bonus()
+        sock.send(bytes("medien/punkte/punkte:42", "UTF-8"))
+        sleep(5)
+        if debug: print("fail()")
+        fail()
+        sock.send(bytes("medien/punkte/punkte:1337", "UTF-8"))
+        sleep(5)
+        if debug: print("ende")
+        sock.send(bytes("medien/punkte/punkte:ende", "UTF-8"))
+        ende()
+        sleep(5)
 
+else:
+    main()
