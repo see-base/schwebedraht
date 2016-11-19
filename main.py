@@ -29,6 +29,12 @@ zeitenListe = []
 debug = False
 demo = False
 
+#gpios einstellen
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+for key, value in segmente:
+	GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
 # komandozeilenargumente
 for i in argv:
     if i in ["--help", "-h", "/h", "/help", "?", "h"]:
@@ -66,7 +72,7 @@ def main():
 
 def get_time(name, pin):
     global startzeit
-    
+
     if name == "start": startzeit = time()
     else: zeitenListe.append((pin, time()))
 
@@ -76,22 +82,22 @@ def start():
 
 def ende():
     # Statistiken fuer das Ende
-    # Genaue AufschlÃsselung des extrem komplizierten und geilen Punktesystem
+    # Genaue Aufschlï¿½sselung des extrem komplizierten und geilen Punktesystem
     pass
-    # zurÃcksetzen
+    # zurï¿½cksetzen
 
 def bonus():
     # Ein Sternchen *bling* effekt
     sock.send(bytes("medien/zoom_exponential:" + str(1), "UTF-8"))
     sock.send(bytes("medien/effekt/bildname:" + str("star.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
-    
+
 def fail():
     # Ein Sternchen *bling* effekt
     sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
     sock.send(bytes("medien/effekt/bildname:" + str("pesthorn.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
-    
+
 if demo:
     while True:
         sock.send(bytes("medien/punkte/punkte:start", "UTF-8"))
