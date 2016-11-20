@@ -6,6 +6,7 @@ local bild = resource.load_image(bildname)
 
 util.data_mapper {
     ["bildname"] = function(value)
+        bild:dispose()
         bild = resource.load_image(value)
     end
 }
