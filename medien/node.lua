@@ -1,5 +1,6 @@
 gl.setup(1024, 600)
-
+node.set_flag "slow_gc"
+node.gc()
 --Hintergrund foo
 
 local font = resource.load_font("Lato-Regular.ttf")
@@ -80,7 +81,7 @@ util.data_mapper {
 
 --Rendere den Infobeamer   
 function node.render()
-    gl.clear(1, 0, 0, 1) -- schwarzer hintergrund
+    gl.clear(1, 0, 0, 1) -- roter hintergrund
 
    --Effekte:
     zoom = zoom + (sys.now() - starttime) * (zoom_multipler + zoom_expo)
@@ -90,7 +91,7 @@ function node.render()
     zoom_expo = zoom_expo + zoom_exponential
     
     -- Laden der Child-Objekte
-    resource.render_child(hintergrund_child):draw(0, 0, WIDTH, HEIGHT, 1)
-    resource.render_child(effekt_child):draw(WIDTH / 2 - zoom / 2, HEIGHT / 2 - zoom / 2, WIDTH / 2 + zoom / 2, HEIGHT / 2 + zoom / 2, effekt_sichtbar)
-    resource.render_child(punkte_child):draw(256, 0, 768, 130, 1)
+    hintergrund = resource.render_child(hintergrund_child):draw(0, 0, WIDTH, HEIGHT, 1):dispose()
+    resource.render_child(effekt_child):draw(WIDTH / 2 - zoom / 2, HEIGHT / 2 - zoom / 2, WIDTH / 2 + zoom / 2, HEIGHT / 2 + zoom / 2, effekt_sichtbar):dispose()
+    resource.render_child(punkte_child):draw(256, 0, 768, 130, 1):dispose()
 end
