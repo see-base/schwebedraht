@@ -1,13 +1,14 @@
 # Schwebedraht
 Ein Spiel der see-base
 
-![Cyber](https://see-base.de/file/2016/03/19/IMG_20160319_161949_2.jpg "Schwebedraht")
+![Cyber](https://see-base.de/file/2016/11/20/IMG_20161119_223809.jpg "Schwebedraht")
 
 
 #Spielkonzept:
 Das Spiel ist ein [Heißer Draht](https://de.wikipedia.org/wiki/Hei%C3%9Fer_Draht_(Spiel) "Wikipedia"), der aus verschiedenen Segmenten besteht.
 Neben den (größeren) Teilen, die man nicht berühren sollte sind (kleinere) Bonussegmente vorhanden, die einem Punkte geben, die je nach dem, wie viel Zeit man vom letzten Segment benötigt hat variieren. Kombinationen von Bonussegment-Berühungen geben nochmal mehr Punkte.
 Jedes mal, wenn ein Segment berührt wurde erscheint auf einem Display eine Reaktion in Form eines Videos, einer Animation und/oder einem Toneffekt.
+Weitere Informationen zu diesem Spiel findet man auch auf [see-base.de/schwebedraht](https://see-base.de/schwebedraht/ "see-base.de").
 
 #Hardware:
 Die Software läuft auf einem Raspberry Pi. Die einzelnen Segmente sind mit den GPIO-Pins verbunden, wodurch eine Berührung von der Software wahrgenommen werden kann.
@@ -35,3 +36,5 @@ Das Entwicklerteam des Schwebedraht ist unter [schwebedraht@see-base.de](mailto:
 
 #Lizenz: 
 [GENERAL PUBLIC LICENSE](https://raw.githubusercontent.com/see-base/schwebedraht/master/LICENSE)
+
+![Scientce](https://see-base.de/file/2016/11/20/IMG_20161119_223821.jpg)
