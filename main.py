@@ -9,6 +9,7 @@ from sys import argv
 import RPi.GPIO as GPIO
 # "its all about time"
 from time import time, sleep
+from random import randint # fuers punktesystem
 # UDP Communication
 import socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -18,16 +19,22 @@ sock.connect(("127.0.0.1", 4444))
 spielName = "Schwebedraht"
 spielNameZusatz = "Ein Spiel der see-base"
 version = "0.2"
-startzeit = 1337
+
 segmente = {
     "start": [12],
     "bonus": [18, 24, 29, 33],
     "fail": [16, 22, 26, 31, 35],
     "ende": [37]
 }
+
+startzeit = None
 zeitenListe = []
+
 debug = False
 demo = False
+
+punkte = 0
+p_multiplikator = 1
 
 #gpios einstellen
 GPIO.setwarnings(False)
@@ -46,7 +53,7 @@ for i in argv:
         print("\t--demo\t- Demo Modus")
         print("\n")
         exit()
-    elif i == "-v":
+    elif i in ["-v", "--version"]:
         print("\n{0} - {1}\n\nVersion:\t{2}\n".format(spielName, spielNameZusatz, version))
         exit()
     elif i == "--debug":
@@ -71,14 +78,21 @@ def main():
                         ende()
                     sleep(0.1)
 
+# zeitmessung
 def get_time(name, pin):
     global startzeit
-
-    if name == "start": startzeit = time()
-    else: zeitenListe.append((pin, time() - startzeit))
     if debug: print("Zeitstempel:", time() - startzeit)
 
+    zeit = time()
+    if name == "start":
+        startzeit = zeit
+    else:
+        zeitenListe.append((pin, zeit - startzeit))
+        punkte_setzen(zeitenListe[-1], zeitenListe[-2])
+
+# funktionen fuer effekte
 def start():
+    # todo: game-reset einbauen
     if debug: print("start()")
     #effekt_countdown_Spielstart
 
@@ -102,6 +116,23 @@ def fail():
     sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
     sock.send(bytes("medien/effekt/bildname:" + str("pesthorn.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
+
+def punkte_setzen(aktuelle_zeit, letzte_zeit):
+    global punkte, p_multiplikator
+
+    pin1, zeit1 = aktuelle_zeit
+    pin2, zeit2 = letzte_zeit
+
+    if pin1 != pin2:
+        if zeit1 - zeit2 < 5:
+            p_multiplikator *= 2
+        elif zeit1 - zeit2 < 10:
+            p_multiplikator += 1
+
+    if pin1 in segmante["bonus"]:
+        punkte += randint(100, 300)
+    elif pin1 in segmente["fail"] and punkte > 0:
+        punkte -= randint(50, 100)
 
 if demo:
     while True:
