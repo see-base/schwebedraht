@@ -23,6 +23,7 @@ segmente = {
 }
 
 startzeit = 0.0
+#startzeit == zeitenListe[0] ? <- die startzeit wird ohnehin das erste element.
 zeitenListe = []
 
 debug = False
@@ -61,6 +62,7 @@ def main():
                     if debug: print("\nPin {} wurde berührt | Key = {}".format(pin, key))
                     get_time(key, pin)
                     if key == "start":
+                        #reset() -- bin hier noch auf käferjagt...
                         start()
                     elif key == "bonus":
                         bonus()
@@ -68,14 +70,15 @@ def main():
                         fail()
                     elif key == "ende":
                         ende()
-                    sleep(0.1)
+                    sleep(0.2)
 
 # zeitmessung
 def get_time(name, pin):
-    global startzeit
+    global startzeit, zeitenListe
     zeit = time()
 
-    if debug: print("Zeitstempel:", zeit - startzeit)
+    if debug:
+        print("Zeitstempel:", zeit - startzeit) if startzeit != 0.0 else print("Zeitstempel:", startzeit)
     if name == "start":
         startzeit = zeit
         zeitenListe.append((pin, startzeit))
@@ -85,16 +88,13 @@ def get_time(name, pin):
 
 # funktionen fuer effekte
 def start():
-    # todo: game-reset einbauen
     if debug: print("start()")
     #effekt_countdown_Spielstart
 
 def ende():
     if debug: print("ende()")
     # Statistiken fuer das Ende
-    # Genaue Aufschlüsselung des extrem komplizierten und geilen Punktesystem
-    pass
-    # zurücksetzen
+    # Genaue Aufschlüsselung des extrem komplizierten und geilen *hust hust* Punktesystem
 
 def bonus():
     if debug: print("bonus()")
@@ -125,13 +125,23 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
             elif zeit - zeit2 >= 15: # m. wird zurueckgesetzt ab 15 sek
                 p_multiplikator = 1
 
-            punkte += randint(100, 300) * p_multiplikator # punke setzen
+            rand = randint(10, 50)
+            print("Rohpunkte ({}) * Multiplikator ({}) = {}".format(rand, p_multiplikator, rand * p_multiplikator))
+            punkte += rand * p_multiplikator # punke setzen
 
         elif pin1 in segmente["fail"]:
             if p_multiplikator > 1: # bei beruehrung wird m. um eins verringert
                 p_multiplikator -= 1
 
     if debug: print("Punkte: {} | Multiplikator: {}".format(punkte, p_multiplikator))
+
+def reset():
+    if debug: print("reset")
+    global startzeit, zeitenListe, punkte, p_multiplikator
+    startzeit = 0.0
+    zeitenListe = []
+    punkte = 0
+    p_multiplikator = 1
 
 # komandozeilenargumente
 for i in argv:
@@ -152,4 +162,8 @@ for i in argv:
     elif i == "--demo":
         demo = True
 
-main()
+try:
+    main()
+except KeyboardInterrupt:
+    # diese zeile spaeter durch reset-funktion beim start ersetzen.
+    sock.send(bytes("medien/punkte/punkte:0 | 1", "UTF-8"))
