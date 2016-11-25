@@ -124,7 +124,7 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
     pin1, zeit1 = aktuelle_zeit
     pin2, zeit2 = letzte_zeit
 
-    if pin1 in segmente["bonus"] and pin2 != pin1:
+    if pin1 in segmente["bonus"] and pin2 != pin1: # zwei mal das gleiche bonus-segment berühren wird hiermit vermieden
         if zeit1 - zeit2 <= 5:   # m. verdoppelt sich bis 5 sek
             p_multiplikator *= 2
         elif zeit1 - zeit2 <= 10: # m. erhoeht sich um 1 bis 10 sek
