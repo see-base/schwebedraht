@@ -2,13 +2,13 @@
 ##zwischen der Spielehardware und dem Raspberry PI
 
 #Spielkonzept:
-Das Spiel ist ein [Heißer Draht](https://de.wikipedia.org/wiki/Hei%C3%9Fer_Draht_(Spiel) "Wikipedia"), der aus verschiedenen Segmenten besteht.
-Neben den (größeren) Teilen, die man nicht berühren sollte sind (kleinere) Bonussegmente vorhanden, die einem Punkte geben, die je nach dem, wie viel Zeit man vom letzten Segment benötigt hat variieren. Kombinationen von Bonussegment-Berühungen geben nochmal mehr Punkte.
-Jedes mal, wenn ein Segment berührt wurde erscheint auf einem Display eine Reaktion in Form eines Videos, einer Animation und/oder einem Toneffekt.
+Das Spiel ist ein [HeiÃŸer Draht](https://de.wikipedia.org/wiki/Hei%C3%9Fer_Draht_(Spiel) "Wikipedia"), der aus verschiedenen Segmenten besteht.
+Neben den (grÃ¶ÃŸeren) Teilen, die man nicht berÃ¼hren sollte sind (kleinere) Bonussegmente vorhanden, die einem Punkte geben, die je nach dem, wie viel Zeit man vom letzten Segment benÃ¶tigt hat variieren. Kombinationen von Bonussegment-BerÃ¼hungen geben nochmal mehr Punkte.
+Jedes mal, wenn ein Segment berÃ¼hrt wurde erscheint auf einem Display eine Reaktion in Form eines Videos, einer Animation und/oder einem Toneffekt.
 
 ##Hardware
-Das Spiel Schwebedraht ist in mehrere Segmente eingeteilt. Die größeren Segmente sollte man nicht berühren während die kleinen Segmente Bonus-Punkte bringen können.
-Jedes der Segmente ist über GPIO mit dem Raspberry Pi verbunden. Dadurch werden genauste Punkte ermittelt und Spielstände bestimmt, die dann [an den Info-Beamer weitergegeben](https://github.com/see-base/schwebedraht/blob/master/medien/Readme.md "medien/Readme.md") werden.
+Das Spiel Schwebedraht ist in mehrere Segmente eingeteilt. Die grÃ¶ÃŸeren Segmente sollte man nicht berÃ¼hren wÃ¤hrend die kleinen Segmente Bonus-Punkte bringen kÃ¶nnen.
+Jedes der Segmente ist Ã¼ber GPIO mit dem Raspberry Pi verbunden. Dadurch werden genauste Punkte ermittelt und SpielstÃ¤nde bestimmt, die dann [an den Info-Beamer weitergegeben](https://github.com/see-base/schwebedraht/blob/master/medien/Readme.md "medien/Readme.md") werden.
 
 | Funktion       | Segment Nr. | Farbe GPIO Pin | PIN Raspberry Pi **2** |
 | ---------------|:------------| :------------: | :-------:|
@@ -24,7 +24,3 @@ Jedes der Segmente ist über GPIO mit dem Raspberry Pi verbunden. Dadurch werden 
 | Bonus #4       | 9           | Gelb           | `Pin 33` |
 | Letztes Segment| 10          | Schwarz-Gelb   | `Pin 35` |
 | Spiel beenden  | 11          | Gelb-Schwarz   | `Pin 37` |
- 
-
-##Programierung:
-Python3 ist eine sehr Hardware nahe Sprache und gerade am Raspberry Pi genau richtig um schnell und einfach auf die GPIOs zuzugreifen.
