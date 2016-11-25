@@ -8,6 +8,7 @@ from sys import argv # fuer die kommandozeilenargumente
 import RPi.GPIO as GPIO # raspi gpio-pins
 from time import time, sleep # fuer zeitmessung und pausen
 from random import randint # fuers punktesystem
+import math
 import socket # udp-kommunikation
 
 # Globale Variabeln:
@@ -23,7 +24,6 @@ segmente = {
 }
 
 startzeit = 0.0
-#startzeit == zeitenListe[0] ? <- die startzeit wird ohnehin das erste element.
 zeitenListe = []
 
 debug = False
@@ -41,6 +41,12 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 for key, value in segmente.items():
 	GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+# funktions-schleife:
+# -> warte auf input
+# -> speichere die zeit für den input
+# -> ermittle die punkte
+# -> zeige einen effekt
 
 def main():
 
@@ -81,10 +87,12 @@ def get_time(name, pin):
         print("Zeitstempel:", zeit - startzeit) if startzeit != 0.0 else print("Zeitstempel:", startzeit)
     if name == "start":
         startzeit = zeit
-        zeitenListe.append((pin, startzeit))
+        zeitenListe.append((pin, zeit - startzeit))
     else:
         zeitenListe.append((pin, zeit - startzeit))
-        punkte_setzen(zeitenListe[-1], zeitenListe[-2])
+        if zeitenListe[-1][1] - zeitenListe[-2][1] > 1:
+            punkte_setzen(zeitenListe[-1], zeitenListe[-2])
+        else: zeitenListe.pop()
 
 # funktionen fuer effekte
 def start():
@@ -116,21 +124,21 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
     pin1, zeit1 = aktuelle_zeit
     pin2, zeit2 = letzte_zeit
 
-    if pin1 != pin2:
-        if pin1 in segmente["bonus"]:
-            if zeit1 - zeit2 <= 5:   # m. verdoppelt sich bis 5 sek
-                p_multiplikator *= 2
-            elif zeit1 - zeit2 <= 10: # m. erhoeht sich um 1 bis 10 sek
-                p_multiplikator += 1
-            elif zeit - zeit2 >= 15: # m. wird zurueckgesetzt ab 15 sek
-                p_multiplikator = 1
+    if pin1 in segmente["bonus"] and pin2 != pin1:
+        if zeit1 - zeit2 <= 5:   # m. verdoppelt sich bis 5 sek
+            p_multiplikator *= 2
+        elif zeit1 - zeit2 <= 10: # m. erhoeht sich um 1 bis 10 sek
+            p_multiplikator += 1
+        elif zeit1 - zeit2 >= 15: # m. wird zurueckgesetzt ab 15 sek
+            p_multiplikator = 1
 
-            punkte += randint(10, 50) * p_multiplikator # punke setzen
+        punkte += randint(10, 50) * p_multiplikator # punke setzen
 
-        elif pin1 in segmente["fail"]:
-            if p_multiplikator > 1: # bei beruehrung wird m. um eins verringert
-                p_multiplikator -= 1
+    elif pin1 in segmente["fail"]:
+        if p_multiplikator > 1: # bei beruehrung wird m. halbiert
+            p_multiplikator = math.ceil(p_multiplikator / 2)
 
+    sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, p_multiplikator), "UTF-8"))
     if debug: print("Punkte: {} | Multiplikator: {}".format(punkte, p_multiplikator))
 
 def reset():
