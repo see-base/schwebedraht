@@ -3,17 +3,12 @@
 #
 # Schwebedraht - ein Spiel der see-base
 #
-# fuer die komandozeilenargumente
-from sys import argv
-# GPIOs:
-import RPi.GPIO as GPIO
-# "its all about time"
-from time import time, sleep
+
+from sys import argv # fuer die kommandozeilenargumente
+import RPi.GPIO as GPIO # raspi gpio-pins
+from time import time, sleep # fuer zeitmessung und pausen
 from random import randint # fuers punktesystem
-# UDP Communication
-import socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.connect(("127.0.0.1", 4444))
+import socket # udp-kommunikation
 
 # Globale Variabeln:
 spielName = "Schwebedraht"
@@ -27,7 +22,7 @@ segmente = {
     "ende": [37]
 }
 
-startzeit = None
+startzeit = 0.0
 zeitenListe = []
 
 debug = False
@@ -36,32 +31,29 @@ demo = False
 punkte = 0
 p_multiplikator = 1
 
-#gpios einstellen
+# UDP-Socket einstellen
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.connect(("127.0.0.1", 4444))
+
+# GPIOs einstellen
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 for key, value in segmente.items():
 	GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-# komandozeilenargumente
-for i in argv:
-    if i in ["--help", "-h", "/h", "/help", "?", "h"]:
-        print("\n{0} - \n".format(spielName, spielNameZusatz))
-        print("Quelle: https://github.com/see-base/schwebedraht\n\n")
-        print("Moegliche Befehle:\n\t--help\t- Zeigt diese Hilfe an")
-        print("\t-v\t- Zeigt die Version des Spieles")
-        print("\t--debug\t- Debug Modus...")
-        print("\t--demo\t- Demo Modus")
-        print("\n")
-        exit()
-    elif i in ["-v", "--version"]:
-        print("\n{0} - {1}\n\nVersion:\t{2}\n".format(spielName, spielNameZusatz, version))
-        exit()
-    elif i == "--debug":
-        debug = True
-    elif i == "--demo":
-        demo = True
-
 def main():
+
+    if demo:
+        while True:
+            for s in ["start", "bonus", "fail", "bonus", "bonus", "fail", "bonus", "ende"]:
+                get_time(s, segmente[s][randint(0, len(segmente[s]) - 1)])
+                sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, p_multiplikator), "UTF-8"))
+                if s == "start": start()
+                elif s == "bonus": bonus()
+                elif s == "fail": fail()
+                elif s == "ende": ende()
+                sleep(5)
+
     while True:
         for key, value in segmente.items():
             for pin in value:
@@ -81,11 +73,12 @@ def main():
 # zeitmessung
 def get_time(name, pin):
     global startzeit
-    if debug: print("Zeitstempel:", time() - startzeit)
-
     zeit = time()
+
+    if debug: print("Zeitstempel:", zeit - startzeit)
     if name == "start":
         startzeit = zeit
+        zeitenListe.append((pin, startzeit))
     else:
         zeitenListe.append((pin, zeit - startzeit))
         punkte_setzen(zeitenListe[-1], zeitenListe[-2])
@@ -99,7 +92,7 @@ def start():
 def ende():
     if debug: print("ende()")
     # Statistiken fuer das Ende
-    # Genaue Aufschl�sselung des extrem komplizierten und geilen Punktesystem
+    # Genaue Aufschlüsselung des extrem komplizierten und geilen Punktesystem
     pass
     # zurücksetzen
 
@@ -124,25 +117,39 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
     pin2, zeit2 = letzte_zeit
 
     if pin1 != pin2:
-        if zeit1 - zeit2 < 5:
-            p_multiplikator *= 2
-        elif zeit1 - zeit2 < 10:
-            p_multiplikator += 1
+        if pin1 in segmente["bonus"]:
+            if zeit1 - zeit2 <= 5:   # m. verdoppelt sich bis 5 sek
+                p_multiplikator *= 2
+            elif zeit1 - zeit2 <= 10: # m. erhoeht sich um 1 bis 10 sek
+                p_multiplikator += 1
+            elif zeit - zeit2 >= 15: # m. wird zurueckgesetzt ab 15 sek
+                p_multiplikator = 1
 
-    if pin1 in segmante["bonus"]:
-        punkte += randint(100, 300)
-    elif pin1 in segmente["fail"] and punkte > 0:
-        punkte -= randint(50, 100)
+            punkte += randint(100, 300) * p_multiplikator # punke setzen
 
-if demo:
-    while True:
-        for s in ["start", "42", "1337", "ende"]:
-            sock.send(bytes("medien/punkte/punkte:" + s, "UTF-8"))
-            if s == "start": start()
-            elif s == "42": bonus()
-            elif s == "1337": fail()
-            elif s == "ende": ende()
-            sleep(5)
+        elif pin1 in segmente["fail"]:
+            if p_multiplikator > 1: # bei beruehrung wird m. um eins verringert
+                p_multiplikator -= 1
 
-else:
-    main()
+    if debug: print("Punkte: {} | Multiplikator: {}".format(punkte, p_multiplikator))
+
+# komandozeilenargumente
+for i in argv:
+    if i in ["--help", "-h", "/h", "/help", "?", "h"]:
+        print("\n{0} - \n".format(spielName, spielNameZusatz))
+        print("Quelle: https://github.com/see-base/schwebedraht\n\n")
+        print("Moegliche Befehle:\n\t--help\t- Zeigt diese Hilfe an")
+        print("\t-v\t- Zeigt die Version des Spieles")
+        print("\t--debug\t- Debug Modus...")
+        print("\t--demo\t- Demo Modus")
+        print("\n")
+        exit()
+    elif i in ["-v", "--version"]:
+        print("\n{0} - {1}\n\nVersion:\t{2}\n".format(spielName, spielNameZusatz, version))
+        exit()
+    elif i == "--debug":
+        debug = True
+    elif i == "--demo":
+        demo = True
+
+main()
