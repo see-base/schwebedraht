@@ -125,9 +125,7 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
             elif zeit - zeit2 >= 15: # m. wird zurueckgesetzt ab 15 sek
                 p_multiplikator = 1
 
-            rand = randint(10, 50)
-            print("Rohpunkte ({}) * Multiplikator ({}) = {}".format(rand, p_multiplikator, rand * p_multiplikator))
-            punkte += rand * p_multiplikator # punke setzen
+            punkte += randint(10, 50) * p_multiplikator # punke setzen
 
         elif pin1 in segmente["fail"]:
             if p_multiplikator > 1: # bei beruehrung wird m. um eins verringert
