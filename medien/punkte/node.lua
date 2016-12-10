@@ -11,7 +11,7 @@ util.data_mapper { -- Empfaengt einen Wrt von main.py
 }
 
 function node.render()
-    gl.clear(1, 1, 1, 0.42)  
+    gl.clear(1, 1, 1, 0.23)  
     if sys.now() > 15 then
         font:write(WIDTH / 2 - width / 2, 20, punkte, 90, 1, 0, 1, 1)
     end

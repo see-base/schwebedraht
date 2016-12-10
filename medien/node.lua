@@ -9,7 +9,7 @@ local font = resource.load_font("Lato-Regular.ttf")
 hintergrund_child = "hintergrund" -- Node fuer Hintergrund Bild/Animation/Wasauchimmer
 effekt_child = "effekt" -- Node fuer Effekte bei einem Event
 punkte_child = "punkte" -- Node fuer die Punkteanzeige
-
+auswertung_child = "auswertung" -- Node fuer Auswertung / Spiel Ende
 effekt_sichtbar = 0
 
 zoom = 0
@@ -93,6 +93,7 @@ function node.render()
     
     -- Laden der Child-Objekte
     hintergrund = resource.render_child(hintergrund_child):draw(0, 0, WIDTH, HEIGHT, 1):dispose()
+    resource.render_child(auswertung_child):draw(0, 0, WIDTH, HEIGHT, 1):dispose()
     resource.render_child(effekt_child):draw(WIDTH / 2 - zoom / 2, HEIGHT / 2 - zoom / 2, WIDTH / 2 + zoom / 2, HEIGHT / 2 + zoom / 2, effekt_sichtbar):dispose()
     resource.render_child(punkte_child):draw(256, 0, 768, 130, 1):dispose()
 end

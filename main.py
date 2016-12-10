@@ -47,8 +47,10 @@ for key, value in segmente.items():
 
 #  Init Audio und Audio-Dateien laden
 mixer.init()
+start_sound = mixer.Sound("medien/start.wav")
 bonus_sound = mixer.Sound("medien/bonus.wav")
 fail_sound = mixer.Sound("medien/fail.wav")
+end_sound = mixer.Sound("medien/end.wav")
 
 # funktions-schleife:
 # -> warte auf input
@@ -112,12 +114,17 @@ def get_time(name, pin):
 def start():
     if debug: print("start()")
     sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, p_multiplikator), "UTF-8"))
+    mixer.Sound.play(start_sound)
+    sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) 
+
     #effekt_countdown_Spielstart
 
 def ende():
     if debug: print("ende()")
     # Statistiken fuer das Ende
     # Genaue Aufschlüsselung des extrem komplizierten und geilen *hust hust* Punktesystem
+    mixer.Sound.play(end_sound)
+    auswertung()
     reset()
 
 def bonus():
@@ -136,6 +143,16 @@ def fail():
     sock.send(bytes("medien/effekt/bildname:" + str("Pesthoernchen.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
     mixer.Sound.play(fail_sound)
+
+def auswertung():
+    if debug: print("zeigt auswertung des gerade beendeten spiels")
+    sock.send(bytes("medien/punkte/punkte:" + str("Auswertung:"), "UTF-8"))
+    sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) 
+    
+
+def highscoreliste():
+    # blendet bei laengerem idlen die aktuelle Highscoreliste ein
+    pass
 
 def punkte_setzen(aktuelle_zeit, letzte_zeit):
     global punkte, p_multiplikator
