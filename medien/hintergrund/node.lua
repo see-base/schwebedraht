@@ -1,4 +1,4 @@
-gl.setup(1024, 600)
+gl.setup(1024, 750)
 
 local font = resource.load_font("Lato-Regular.ttf")
 local video = resource.load_video{

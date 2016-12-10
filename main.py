@@ -26,6 +26,8 @@ segmente = {
 startzeit = 0.0
 zeitenListe = []
 
+running = False
+
 debug = False
 demo = False
 
@@ -49,6 +51,7 @@ for key, value in segmente.items():
 # -> zeige einen effekt
 
 def main():
+    global running
 
     if demo:
         while True:
@@ -66,17 +69,22 @@ def main():
             for pin in value:
                 if not GPIO.input(pin):
                     if debug: print("\nPin {} wurde berührt | Key = {}".format(pin, key))
-                    get_time(key, pin)
-                    if key == "start":
-                        #reset() -- bin hier noch auf käferjagt...
-                        start()
-                    elif key == "bonus":
-                        bonus()
-                    elif key == "fail":
-                        fail()
-                    elif key == "ende":
-                        ende()
-                    sleep(0.2)
+                    
+                    if running == False:
+                        if key == "start":
+                            running = True
+                            get_time(key, pin)
+                            #reset() -- bin hier noch auf käferjagt...
+                            start()
+                    else:
+                        get_time(key, pin)
+                        if key == "bonus":
+                            bonus()
+                        elif key == "fail":
+                            fail()
+                        elif key == "ende":
+                            ende()
+                        sleep(0.2)
 
 # zeitmessung
 def get_time(name, pin):
@@ -97,12 +105,14 @@ def get_time(name, pin):
 # funktionen fuer effekte
 def start():
     if debug: print("start()")
+    sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, p_multiplikator), "UTF-8"))
     #effekt_countdown_Spielstart
 
 def ende():
     if debug: print("ende()")
     # Statistiken fuer das Ende
     # Genaue Aufschlüsselung des extrem komplizierten und geilen *hust hust* Punktesystem
+    reset()
 
 def bonus():
     if debug: print("bonus()")
@@ -138,15 +148,20 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
         if p_multiplikator > 1: # bei beruehrung wird m. halbiert
             p_multiplikator = math.ceil(p_multiplikator / 2)
 
-    sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, p_multiplikator), "UTF-8"))
-    if debug: print("Punkte: {} | Multiplikator: {}".format(punkte, p_multiplikator))
+    beruehrt = 0
+    for e in zeitenListe:
+        if e[0] in segmente["fail"]:
+            beruehrt += 1
+    sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, beruehrt), "UTF-8"))
+    if debug: print("Punkte: {} | Multiplikator: {} | Berührungen: {}".format(punkte, p_multiplikator, beruehrt))
 
 def reset():
     if debug: print("reset")
-    global startzeit, zeitenListe, punkte, p_multiplikator
+    global startzeit, zeitenListe, punkte, running , p_multiplikator
     startzeit = 0.0
     zeitenListe = []
     punkte = 0
+    running = False
     p_multiplikator = 1
 
 # komandozeilenargumente

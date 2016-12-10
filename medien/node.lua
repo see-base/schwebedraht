@@ -1,4 +1,4 @@
-gl.setup(1024, 600)
+gl.setup(1024, 750)
 node.set_flag "slow_gc"
 node.gc()
 --Hintergrund foo

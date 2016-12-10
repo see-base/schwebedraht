@@ -1,4 +1,4 @@
-gl.setup(1024, 600)
+gl.setup(1024, 750)
 
 bildname = "testbild.png"
 
