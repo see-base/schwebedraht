@@ -12,4 +12,5 @@
 **.lua~
 *.swo
 **.swo
-
+*.wav
+**.wav

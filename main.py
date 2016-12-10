@@ -10,6 +10,7 @@ from time import time, sleep # fuer zeitmessung und pausen
 from random import randint # fuers punktesystem
 import math
 import socket # udp-kommunikation
+from pygame import mixer
 
 # Globale Variabeln:
 spielName = "Schwebedraht"
@@ -43,6 +44,11 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 for key, value in segmente.items():
 	GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+#  Init Audio und Audio-Dateien laden
+mixer.init()
+bonus_sound = mixer.Sound("medien/bonus.wav")
+fail_sound = mixer.Sound("medien/fail.wav")
 
 # funktions-schleife:
 # -> warte auf input
@@ -120,13 +126,16 @@ def bonus():
     sock.send(bytes("medien/zoom_exponential:" + str(1), "UTF-8"))
     sock.send(bytes("medien/effekt/bildname:" + str("star.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
+    # Bonus-Sound mit mixer abspielen
+    mixer.Sound.play(bonus_sound) 
 
 def fail():
     if debug: print("fail()")
     # Ein Sternchen *bling* effekt
     sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
-    sock.send(bytes("medien/effekt/bildname:" + str("pesthorn.png"), "UTF-8"))
+    sock.send(bytes("medien/effekt/bildname:" + str("Pesthoernchen.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
+    mixer.Sound.play(fail_sound)
 
 def punkte_setzen(aktuelle_zeit, letzte_zeit):
     global punkte, p_multiplikator

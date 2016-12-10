@@ -1,8 +1,9 @@
 gl.setup(1024, 750)
 node.set_flag "slow_gc"
 node.gc()
---Hintergrund foo
 
+--Hintergrund foo
+local congress = resource.load_font("33c3.ttf")
 local font = resource.load_font("Lato-Regular.ttf")
 
 hintergrund_child = "hintergrund" -- Node fuer Hintergrund Bild/Animation/Wasauchimmer
