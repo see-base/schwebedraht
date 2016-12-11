@@ -1,10 +1,10 @@
 ##Das Punktesystem beim Schwebedraht:
 
-Das tolle an diesem Spiel ist unter anderem, dass man die moeglichkeit hat Punkte zu erzielen kann und diese auch in einer Highscore-Liste auftauchen k√nnen.
-Doch bevor man die Punkte erzielt, muessen diese erst einmal verdient werden. Dies geschieht durch Ber√uehren der Bonus segmente in bestimmten Zeiten und ein wenig Glueck!
+Das tolle an diesem Spiel ist unter anderem, dass man die moeglichkeit hat Punkte zu erzielen kann und diese auch in einer Highscore-Liste auftauchen koennten.
+Doch bevor man die Punkte erzielt, muessen diese erst einmal verdient werden. Dies geschieht durch Ber√Éuehren der Bonus segmente in bestimmten Zeiten und ein wenig Glueck!
 
 #Spielen
-Mit dem Beruehren des Start-Segments aktiviert man das Spiel und es koennen Punkte verdient werden. Beim Erhalten von `PUNKTEN` ert√nt ein Sound und es erscheint ein allgemein eher als Belohnung wazunehmendes Symbol auf dem Display. Beispielsweise ein Stern.
+Mit dem Beruehren des Start-Segments aktiviert man das Spiel und es koennen Punkte verdient werden. Beim Erhalten von `PUNKTEN` ert√Ént ein Sound und es erscheint ein allgemein eher als Belohnung wazunehmendes Symbol auf dem Display. Beispielsweise ein Stern.
 
 ##get_time:
 **Technisch** funktioniert das so, dass *irgendwann* die Funktion `get_time` die Variablen `name` und `pin` bekommt.
@@ -18,30 +18,30 @@ Ist nun die aktuelle Zeit mehr als 1 Sekunde von der zuvor in die Liste eingetra
 ```python
 
 def get_time(name, pin):
-    zeit = time()                                                                                                                                                         
-    if name == "start":                                                                                                                                                   
-        startzeit = zeit                                                                                                                                                  
-        zeitenListe.append((pin, zeit - startzeit))                                                                                                                       
-    else:                                                                                                                                                                 
-        zeitenListe.append((pin, zeit - startzeit))                                                                                                                       
-        if zeitenListe[-1][1] - zeitenListe[-2][1] > 1:                                                                                                                   
-            punkte_setzen(zeitenListe[-1], zeitenListe[-2])                                                                                                               
-        else: zeitenListe.pop() 
+    zeit = time()
+    if name == "start":
+    startzeit = zeit
+        zeitenListe.append((pin, zeit - startzeit))
+    else:
+        zeitenListe.append((pin, zeit - startzeit))
+        if zeitenListe[-1][1] - zeitenListe[-2][1] > 1:
+            punkte_setzen(zeitenListe[-1], zeitenListe[-2])
+        else: zeitenListe.pop()
 
 ```
 
 ##punkte_setzen:
 
-In dieser Funktion werden als erstes die Eintr√ge aus der `zeitenListe` wieder auf einzelne variablen aufgeteilt. Au√üerdem werden die Globalen variablen `punkte` Und der punkte Multiplikator verwendet.
+In dieser Funktion werden als erstes die Eintraege aus der `zeitenListe` wieder auf einzelne variablen aufgeteilt. Au√É≈∏erdem werden die Globalen variablen `punkte` Und der punkte Multiplikator verwendet.
 
 ```python
 
-def punkte_setzen(aktuelle_zeit, letzte_zeit):                                                                                                                            
-    global punkte, p_multiplikator                                                                                                                                        
-
-    pin1, zeit1 = aktuelle_zeit                                                                                                                                           
+def punkte_setzen(aktuelle_zeit, letzte_zeit):
+    global punkte, p_multiplikator
+    
+    pin1, zeit1 = aktuelle_zeit
     pin2, zeit2 = letzte_zeit
-
+    
 ```
 Ist die beruehrte Stelle eine Bonus-Stelle, dann wird als erstes geprueft, ob die zuvor beruehrte Stelle aus dem selben Segment ist, also die selbe `pin`-Nummer hat.
 Ist dem nicht der Fall, koennen folgende Sachen passieren:
@@ -53,34 +53,36 @@ Schliesslich werden die Punkte um eine zufaellige Zahl zwischen 10 und 50 erzeug
 
 ```python
 
-    if pin1 in segmente["bonus"] and pin2 != pin1: # zwei mal das gleiche bonus-segment ber√ºhren wird hiermit vermieden                                                   
-        if zeit1 - zeit2 <= 5:   # m. verdoppelt sich bis 5 sek                                                                                                           
-            p_multiplikator *= 2                                                                                                                                          
-        elif zeit1 - zeit2 <= 10: # m. erhoeht sich um 1 bis 10 sek                                                                                                       
-            p_multiplikator += 1                                                                                                                                          
-        elif zeit1 - zeit2 >= 15: # m. wird zurueckgesetzt ab 15 sek                                                                                                      
-            p_multiplikator = 1                                                                                                                                           
-                                                                                                                                                                          
-        punkte += randint(10, 50) * p_multiplikator # punke setzen                                                                                                        
-
+    if pin1 in segmente["bonus"] and pin2 != pin1: 
+    # zwei mal das gleiche bonus-segment beruehren wird hiermit vermieden
+        if zeit1 - zeit2 <= 5:   # m. verdoppelt sich bis 5 sek
+            p_multiplikator *= 2
+        elif zeit1 - zeit2 <= 10: # m. erhoeht sich um 1 bis 10 sek
+            p_multiplikator += 1
+        elif zeit1 - zeit2 >= 15: # m. wird zurueckgesetzt ab 15 sek
+            p_multiplikator = 1
+            
+        punkte += randint(10, 50) * p_multiplikator # punke setzen
+        
 ```
 Falls man allerdings ein Segment des Types `fail` beruehrt haben sollte, so wird der Multiplikator halbiert, solange dieser mehr wie 1 betraegt:
 
 ```python
 
-    elif pin1 in segmente["fail"]:                                                                                                                                        
-        if p_multiplikator > 1: # bei beruehrung wird m. halbiert                                                                                                         
-            p_multiplikator = math.ceil(p_multiplikator / 2) 
+    elif pin1 in segmente["fail"]:
+        if p_multiplikator > 1: # bei beruehrung wird m. halbiert
+            p_multiplikator = math.ceil(p_multiplikator / 2)
 
 ```
 Zu guter letzt wird noch gezahlt, wie oft insgesamt ein `fail`-Segment beruehrt worden ist:
 
 ```python
 
-    beruehrt = 0                                                                                                                                                          
-    for e in zeitenListe:                                                                                                                                                 
-        if e[0] in segmente["fail"]:                                                                                                                                      
-            beruehrt += 1 
+    beruehrt = 0
+    for e in zeitenListe: 
+        if e[0] in segmente["fail"]:
+            beruehrt += 1
+            
 ```
 
 
