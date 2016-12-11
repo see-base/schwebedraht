@@ -3,7 +3,8 @@
 #
 # Schwebedraht - ein Spiel der see-base
 #
-
+# Groessere Aenderungen bitte in den READMEs Dokumentieren!
+#
 from sys import argv # fuer die kommandozeilenargumente
 import RPi.GPIO as GPIO # raspi gpio-pins
 from time import time, sleep # fuer zeitmessung und pausen
@@ -15,7 +16,7 @@ from pygame import mixer
 # Globale Variabeln:
 spielName = "Schwebedraht"
 spielNameZusatz = "Ein Spiel der see-base"
-version = "0.2"
+version = "0.3"
 
 segmente = {
     "start": [12],
@@ -54,9 +55,9 @@ end_sound = mixer.Sound("medien/end.wav")
 
 # funktions-schleife:
 # -> warte auf input
-# -> speichere die zeit für den input
-# -> ermittle die punkte
-# -> zeige einen effekt
+# --> speichere die zeit für den input
+# ---> ermittle die punkte
+# ----> zeige einen effekt
 
 def main():
     global running
@@ -145,10 +146,15 @@ def fail():
     mixer.Sound.play(fail_sound)
 
 def auswertung():
-    if debug: print("zeigt auswertung des gerade beendeten spiels")
+    global punkte, startzeit, zeitenListe
+    if debug: print("auswertung()")
+    zeit = time()
     sock.send(bytes("medien/punkte/punkte:" + str("Auswertung:"), "UTF-8"))
-    sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) 
-    
+    sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) #ausblenden "See-Base"
+    sock.send(bytes("medien/auswertung:" + str("1"), "UTF-8")) #einblenden auswertung-node
+    # Senden der Punkte
+    sock.send(bytes("medien/auswertung/punkte:" + str(punkte), "UTF-8")) # Gesamtpunkte
+    sock.send(bytes("medien/auswertung/zeit:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
 
 def highscoreliste():
     # blendet bei laengerem idlen die aktuelle Highscoreliste ein

@@ -1,4 +1,5 @@
 gl.setup(1024, 750)
+--Aenderungen von Funktionen bitte Dokumentieren!
 
 bildname = "testbild.png"
 

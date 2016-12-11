@@ -1,10 +1,11 @@
 gl.setup(512, 130)
+--Aenderungen von Funktionen bitte Dokumentieren!
 local font = resource.load_font("Lato-Regular.ttf")
 punkte=0 --Punkte Anzahl
 width = font:width(punkte, 90)
 
 util.data_mapper { -- Empfaengt einen Wrt von main.py
-    ["punkte"] = function(value)
+    ["punkte"] = function(value) --Funktion "punkte"
         punkte = value
         width = font:width(punkte, 90)
     end

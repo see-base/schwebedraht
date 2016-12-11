@@ -1,4 +1,5 @@
 gl.setup(1024, 750)
+--Aenderungen von Funktionen bitte Dokumentieren!
 
 local congress = resource.load_font("33c3.ttf")
 local font = resource.load_font("Lato-Regular.ttf")

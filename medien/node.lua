@@ -1,6 +1,7 @@
 gl.setup(1024, 750)
 node.set_flag "slow_gc"
 node.gc()
+--Aenderungen von Funktionen bitte Dokumentieren!
 
 --Hintergrund foo
 local congress = resource.load_font("33c3.ttf")
@@ -11,6 +12,7 @@ effekt_child = "effekt" -- Node fuer Effekte bei einem Event
 punkte_child = "punkte" -- Node fuer die Punkteanzeige
 auswertung_child = "auswertung" -- Node fuer Auswertung / Spiel Ende
 effekt_sichtbar = 0
+auswertung = 0
 
 zoom = 0
 zoom_option = "plus"
@@ -79,7 +81,12 @@ util.data_mapper {
         effekt_sichtbar = 0
     end
 }
-
+util.data_mapper {
+    ["auswertung"] = function(value)
+        auswertung = value
+        effekt_sichtbar = 0
+    end
+}
 --Rendere den Infobeamer   
 function node.render()
     gl.clear(1, 0, 0, 1) -- roter hintergrund
@@ -93,7 +100,7 @@ function node.render()
     
     -- Laden der Child-Objekte
     hintergrund = resource.render_child(hintergrund_child):draw(0, 0, WIDTH, HEIGHT, 1):dispose()
-    resource.render_child(auswertung_child):draw(0, 0, WIDTH, HEIGHT, 1):dispose()
+    resource.render_child(auswertung_child):draw(0, 0, WIDTH, HEIGHT, auswertung):dispose()
     resource.render_child(effekt_child):draw(WIDTH / 2 - zoom / 2, HEIGHT / 2 - zoom / 2, WIDTH / 2 + zoom / 2, HEIGHT / 2 + zoom / 2, effekt_sichtbar):dispose()
     resource.render_child(punkte_child):draw(256, 0, 768, 130, 1):dispose()
 end

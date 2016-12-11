@@ -49,12 +49,18 @@ Das Python script kann durch das anpassen der unten stehenden Variabeln den Effe
 | `zoom_option`     | `plus`/`minus`   | `plus`  | Child Node `effekt` vergrößern oder kleiner werden lassen|
 | `zoom_fade`       | `1`, `2` oder `3`| `1`     | Verschiedene Modi um die Zeit nach dem das Child Node `effekt` ausgeblendet wird eingestellt wird  |
 | `zoom_fade_option`| *positive Zahl*  | `0.05`  | Geschwindigkeit des ausblenden des Child Node `effekt`     |
-
+| `auswertung`      | 0.0 - 1.0        | `0`     | Alpha-Wert des Child-Node `auswertung` |
 Leider noch nicht volständig ausgereift :-(
 
 ##hintergrund
 Das **Child Node**, welches für den Hintergrund in unserem Spiel zuständig ist.
 Dieses Child Node ist als Layer "ganz hinten" angeordnet, so dass es von allen anderen Elementen ueberdeckt wird.
+
+| Variabel-Name    | Wert            | Default        | Funktion  |
+| ---------------- |:---------------:| :------------: | ----------|
+| `alpha`          | `0.0 - 1.0`     | `1`            | `ALPHA`-Wert des Textes: `"Schwebedraht\nEin Spiel der see-base"`. |
+
+
 
 ##effekt
 Das **Child Node**, welches fuer die Effekte zuständig ist.
@@ -71,5 +77,13 @@ Das **Child Node**, welches für die Anzeige der Punkte verantwortlich ist!
 | Variabel-Name    | Wert            | Default| Funktion  |
 | ---------------- |:---------------:| :----: | ----------|
 | `punkte`         | `beliebige Zahl`| `0`    | Punkte, die angezeigt werden. |
+
+##auswertung
+Das **Child Node**, welches fuer die Anzeige der ausgewerteten Punkte am Ende des Spieles zuständig ist. Aufzurufen durch berühren von dem `start`-Segment und dann dem `End`-Segment!
+
+| Variabel-Name    | Wert            | Default   | Funktion  |
+| ---------------- |:---------------:| :----:    | ----------|
+| `zeit`           | `beliebige Zahl`| `none`    | Gesamt-Zeit, die angezeigt wird. |
+| `punkte`         | `beliebige Zahl`| `none`    | Gesamt-Punkte, die angezeigt wird. |
 
 
