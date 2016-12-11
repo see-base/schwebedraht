@@ -114,6 +114,7 @@ def get_time(name, pin):
 # funktionen fuer effekte
 def start():
     if debug: print("start()")
+    sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) # ausblenden auswertung-node
     sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, p_multiplikator), "UTF-8"))
     mixer.Sound.play(start_sound)
     sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) 
@@ -151,7 +152,7 @@ def auswertung():
     zeit = time()
     sock.send(bytes("medien/punkte/punkte:" + str("Auswertung:"), "UTF-8"))
     sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) #ausblenden "See-Base"
-    sock.send(bytes("medien/auswertung:" + str("1"), "UTF-8")) #einblenden auswertung-node
+    sock.send(bytes("medien/ausw:" + str("1"), "UTF-8")) #einblenden auswertung-node
     # Senden der Punkte
     sock.send(bytes("medien/auswertung/punkte:" + str(punkte), "UTF-8")) # Gesamtpunkte
     sock.send(bytes("medien/auswertung/zeit:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit

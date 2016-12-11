@@ -8,7 +8,7 @@ Jedes mal, wenn ein Segment berührt wurde erscheint auf einem Display eine Reak
 
 ##Hardware
 Das Spiel Schwebedraht ist in mehrere Segmente eingeteilt. Die größeren Segmente sollte man nicht berühren während die kleinen Segmente Bonus-Punkte bringen können.
-Jedes der Segmente ist über GPIO mit dem Raspberry Pi verbunden. Dadurch werden genauste Punkte ermittelt und Spielstände bestimmt, die dann [an den Info-Beamer weitergegeben](https://github.com/see-base/schwebedraht/blob/master/medien/Readme.md "medien/Readme.md") werden.
+Jedes der Segmente ist über GPIO mit dem Raspberry Pi verbunden. Dadurch werden genauste Punkte ermittelt und Spielstände bestimmt, die dann [an den Info-Beamer weitergegeben](https://github.com/see-base/schwebedraht/blob/master/medien/README.md "medien/README.md") werden.
 
 | Funktion       | Segment Nr. | Farbe GPIO Pin | PIN Raspberry Pi **2** |
 | ---------------|:------------| :------------: | :-------:|
