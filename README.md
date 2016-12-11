@@ -28,6 +28,8 @@ Der Steuerungscode für das Spiel ist in **Python 3** geschrieben, die Anzeigesc
 
 [Dokumentation](https://github.com/see-base/schwebedraht/blob/master/GPIO.md "GPIO.md") zur technischen Verkabelung der GPIOs zwischen Spielehardware und Raspberry Pi.
 
+[Dokumentation](https://github.com/see-base/schwebedraht/blob/master/PUNKTE.md) Der Zeiterfassung und des Punkte-Systems!
+
 
 #Kontakt:
 Unser Hackerspace ist unter [see-base.de](https://see-base.de) zu finden.
