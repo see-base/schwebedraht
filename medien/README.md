@@ -80,9 +80,14 @@ Das **Child Node**, welches für die Anzeige der Punkte verantwortlich ist!
 ##auswertung
 Das **Child Node**, welches fuer die Anzeige der ausgewerteten Punkte am Ende des Spieles zuständig ist. Aufzurufen durch berühren von dem `start`-Segment und dann dem `End`-Segment!
 
-| Variabel-Name    | Wert            | Default   | Funktion  |
-| ---------------- |:---------------:| :----:    | ----------|
-| `zeit`           | `beliebige Zahl`| `none`    | Gesamt-Zeit, die angezeigt wird. |
-| `punkte`         | `beliebige Zahl`| `none`    | Gesamt-Punkte, die angezeigt wird. |
-| `nick`           | `string`        | `none`    | Ein Unique String, der als Nick in die Highscoreliste eingetragen wird`|
+| Variabel-Name    | Wert            | Default     | Funktion  |
+| ---------------- |:---------------:| :----------:| ----------|
+| `zeit`           | `beliebige Zahl`| `none`      | Gesamt-Zeit, die angezeigt wird. |
+| `punkte`         | `beliebige Zahl`| `none`      | Gesamt-Punkte, die angezeigt wird. |
+| `nick`           | `string`        | `none`      | Ein Unique String, der als Nick in die Highscoreliste eingetragen wird`|
+| `segment1`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 1. Segment |
+| `segment2`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 2. Segment |
+| `segment3`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 3. Segment |
+| `segment4`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 4. Segment |
+| `segment5`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 5. Segment |
 

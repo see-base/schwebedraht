@@ -156,12 +156,19 @@ def auswertung():
     # Senden der Punkte
     sock.send(bytes("medien/auswertung/punkte:" + str(punkte), "UTF-8")) # Gesamtpunkte
     sock.send(bytes("medien/auswertung/zeit:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
-
+    # Sendet die Segmente:
+    sock.send(bytes("medien/auswertung/segment1:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment2:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment3:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment4:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment5:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
+ 
 def highscoreliste():
     # blendet bei laengerem idlen die aktuelle Highscoreliste ein
     pass
 
 def punkte_setzen(aktuelle_zeit, letzte_zeit):
+    # Dokumentation zum Punktesystem unter https://github.com/see-base/schwebedraht/blob/master/PUNKTE.md
     global punkte, p_multiplikator
 
     pin1, zeit1 = aktuelle_zeit
