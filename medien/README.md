@@ -84,7 +84,7 @@ Das **Child Node**, welches fuer die Anzeige der ausgewerteten Punkte am Ende de
 | ---------------- |:---------------:| :----------:| ----------|
 | `zeit`           | `beliebige Zahl`| `none`      | Gesamt-Zeit, die angezeigt wird. |
 | `punkte`         | `beliebige Zahl`| `none`      | Gesamt-Punkte, die angezeigt wird. |
-| `nick`           | `string`        | `none`      | Ein Unique String, der als Nick in die Highscoreliste eingetragen wird`|
+| `nick`           | `string`        | `none`      | Ein Unique String, der als Nick in die Highscoreliste eingetragen wird |
 | `segment1`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 1. Segment |
 | `segment2`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 2. Segment |
 | `segment3`       |`string`|`Punkte: ??, Zeit: ??`| Punkte und Zeit aus dem 3. Segment |
