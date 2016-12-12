@@ -164,7 +164,7 @@ def auswertung():
     global punkte, startzeit, zeitenListe
     if debug: 
         print("auswertung()")
-        print("\tPunkte: "+str(punkte)+"\n\tStartzeit: "+str(startzeit)+"\tzeitenListe:\n"+str(zeitenListe)+"\n")
+        print("\tPunkte: "+str(punkte)+"\n\tStartzeit: "+str(startzeit)+"\n\tzeitenListe:\n"+str(zeitenListe)+"\n\n")
     zeit = time()
     sock.send(bytes("medien/punkte/punkte:" + str("Auswertung:"), "UTF-8"))
     sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) #ausblenden "See-Base"
@@ -172,12 +172,124 @@ def auswertung():
     # Senden der Punkte
     sock.send(bytes("medien/auswertung/punkte:" + str(punkte), "UTF-8")) # Gesamtpunkte
     sock.send(bytes("medien/auswertung/zeit:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
-    # Sendet die Segmente:
-    sock.send(bytes("medien/auswertung/segment1:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment2:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment3:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment4:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment5:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
+    # Die einzelnen Segmente:
+    for liste in zeitenListe:
+        if debug: print("Auswertung der zeitenListe:")
+        gpio, beruehrung = liste
+
+    #
+    # DRAFT:
+    #
+
+
+    # S. = anfang, ende, ges.zeit, beruehrt
+    seg1 = [False, False, False, False]
+    seg2 = [False, False, False, False]
+    seg3 = [False, False, False, False]
+    seg4 = [False, False, False, False]
+    seg5 = [False, False, False, False]
+    for liste in zeitenListe:
+        print(str(liste))
+        gpio, beruehrung = liste
+        zustand = False
+        for a, b in segmente.items():
+            if gpio in b: zustand = a
+        print(str(zustand))
+        print(len(segmente["bonus"]))
+    
+        # kann man mal vernuenftig, dynamisch und cool machen...
+        if zustand == "fail":
+            if gpio == segmente["fail"][0]: seg1[3] += 1
+            if gpio == segmente["fail"][1]: seg2[3] += 1       
+            if gpio == segmente["fail"][2]: seg3[3] += 1
+            if gpio == segmente["fail"][3]: seg4[3] += 1
+            if gpio == segmente["fail"][4]: seg5[3] += 1
+
+
+        # Segment-Anfang ermitteln:
+        if zustand == "start":
+            if seg1[0] == False:        
+                seg1[0] = beruehrung
+            else:
+                if seg1[0] < beruehrung: seg1[0] = beruehrung
+    
+        if gpio == segmente["bonus"][0]:
+            if seg2[0] == False:        
+                seg2[0] = beruehrung
+            else:
+                if seg2[0] < beruehrung: seg2[0] = beruehrung
+    
+        if gpio == segmente["bonus"][1]:
+            if seg3[0] == False:        
+                seg3[0] = beruehrung
+            else:
+                if seg3[0] < beruehrung: seg3[0] = beruehrung
+    
+        if gpio == segmente["bonus"][2]:
+            if seg4[0] == False:        
+                seg4[0] = beruehrung
+            else:
+                if seg4[0] < beruehrung: seg4[0] = beruehrung
+
+        if gpio == segmente["bonus"][3]:
+            if seg5[0] == False:        
+                seg5[0] = beruehrung
+            else:
+                if seg5[0] < beruehrung: seg5[0] = beruehrung
+
+        # Segment-Ende ermitteln:
+    
+
+        if gpio == segmente["bonus"][0]:
+            if seg1[1] == False:        
+                seg1[1] = beruehrung
+            else:
+                if seg1[1] > beruehrung: seg1[1] = beruehrung
+    
+        if gpio == segmente["bonus"][1]:
+            if seg2[1] == False:        
+                seg2[1] = beruehrung
+            else:
+                if seg2[1] > beruehrung: seg2[1] = beruehrung
+    
+    
+        if gpio == segmente["bonus"][2]:
+            if seg3[1] == False:        
+                seg3[1] = beruehrung
+            else:
+                if seg3[1] > beruehrung: seg3[1] = beruehrung
+    
+
+        if gpio == segmente["bonus"][3]:
+            if seg4[1] == False:        
+                seg4[1] = beruehrung
+            else:
+                if seg4[1] > beruehrung: seg4[1] = beruehrung
+
+
+        if gpio == segmente["bonus"][0]:
+            if seg1[1] == False:        
+                seg1[1] = beruehrung
+            else:
+                if seg1[1] > beruehrung: seg1[1] = beruehrung
+
+
+        if zustand == "ende":
+            if seg5[1] == False:        
+                seg5[1] = beruehrung
+            else:
+                if seg5[1] > beruehrung: seg5[1] = beruehrung
+
+
+        # Punkte zahlen:
+        seg1[2] = seg1[1] - seg1[0]
+
+        
+    sock.send(bytes("medien/auswertung/segment1:" + str(seg1), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment2:" + str(seg2), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment3:" + str(seg3), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment4:" + str(seg4), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/segment5:" + str(seg5), "UTF-8")) # Gesamtzeit
  
 def highscoreliste():
     # blendet bei laengerem idlen die aktuelle Highscoreliste ein
