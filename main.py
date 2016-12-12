@@ -32,26 +32,37 @@ running = False
 
 debug = False
 demo = False
+audio = True
 
 punkte = 0
 p_multiplikator = 1
 
-# UDP-Socket einstellen
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.connect(("127.0.0.1", 4444))
+def setup():
+    global audio, sock
+    # UDP-Socket einstellen
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.connect(("127.0.0.1", 4444))
+    if debug: print("UDP-Socket eingestellt")
 
-# GPIOs einstellen
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
-for key, value in segmente.items():
-	GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    # GPIOs einstellen
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    for key, value in segmente.items():
+        GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    if debug: print("GPIOs eingestellt")
 
-#  Init Audio und Audio-Dateien laden
-mixer.init()
-start_sound = mixer.Sound("medien/start.wav")
-bonus_sound = mixer.Sound("medien/bonus.wav")
-fail_sound = mixer.Sound("medien/fail.wav")
-end_sound = mixer.Sound("medien/end.wav")
+    #  Init Audio und Audio-Dateien laden
+    if audio:
+        try:
+            mixer.init()
+            start_sound = mixer.Sound("medien/start.wav")
+            bonus_sound = mixer.Sound("medien/bonus.wav")
+            fail_sound = mixer.Sound("medien/fail.wav")
+            end_sound = mixer.Sound("medien/end.wav")
+            if debug: print("Audio wurde geladen")
+        except:
+            audio = False
+            if debug: print("Audio konnte nicht geladen werden")
 
 # funktions-schleife:
 # -> warte auf input
@@ -116,7 +127,7 @@ def start():
     if debug: print("start()")
     sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) # ausblenden auswertung-node
     sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, p_multiplikator), "UTF-8"))
-    mixer.Sound.play(start_sound)
+    if audio: mixer.Sound.play(start_sound)
     sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) 
 
     #effekt_countdown_Spielstart
@@ -125,7 +136,7 @@ def ende():
     if debug: print("ende()")
     # Statistiken fuer das Ende
     # Genaue Aufschlüsselung des extrem komplizierten und geilen *hust hust* Punktesystem
-    mixer.Sound.play(end_sound)
+    if audio: mixer.Sound.play(end_sound)
     auswertung()
     reset()
 
@@ -136,7 +147,7 @@ def bonus():
     sock.send(bytes("medien/effekt/bildname:" + str("star.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
     # Bonus-Sound mit mixer abspielen
-    mixer.Sound.play(bonus_sound) 
+    if audio: mixer.Sound.play(bonus_sound) 
 
 def fail():
     if debug: print("fail()")
@@ -144,7 +155,7 @@ def fail():
     sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
     sock.send(bytes("medien/effekt/bildname:" + str("Pesthoernchen.png"), "UTF-8"))
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
-    mixer.Sound.play(fail_sound)
+    if audio: mixer.Sound.play(fail_sound)
 
 def auswertung():
     global punkte, startzeit, zeitenListe
@@ -213,6 +224,7 @@ for i in argv:
         print("\t-v\t- Zeigt die Version des Spieles")
         print("\t--debug\t- Debug Modus...")
         print("\t--demo\t- Demo Modus")
+        print("\t--no-audio\t- Keine Audioausgabe")
         print("\n")
         exit()
     elif i in ["-v", "--version"]:
@@ -220,9 +232,17 @@ for i in argv:
         exit()
     elif i == "--debug":
         debug = True
+        print("Debug Modus")
     elif i == "--demo":
         demo = True
+        print("Demo Modus")
+    elif i == "--no-audio":
+        audio = False
+        print("Keine Audioausgabe")
 
+if debug: print("Spiel wird vorbereitet")
+setup()
+if debug: print("Spiel wird gestartet")
 try:
     main()
 except KeyboardInterrupt:
