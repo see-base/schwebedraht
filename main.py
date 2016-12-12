@@ -39,17 +39,19 @@ p_multiplikator = 1
 
 def setup():
     global audio, sock
-    # UDP-Socket einstellen
+    print("\n\033[1;32;40m {0} \033[1;37;40m-\033[1;34;40m {1}\n".format(spielName, spielNameZusatz))
+
+    #UDP-Socket einstellen
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.connect(("127.0.0.1", 4444))
-    if debug: print("UDP-Socket eingestellt")
+    if debug: print("\033[0;36;40mUDP-Socket eingestellt")
 
     # GPIOs einstellen
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
     for key, value in segmente.items():
         GPIO.setup(value, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    if debug: print("GPIOs eingestellt")
+    if debug: print("\033[0;36;40mGPIOs eingestellt")
 
     #  Init Audio und Audio-Dateien laden
     if audio:
@@ -59,10 +61,10 @@ def setup():
             bonus_sound = mixer.Sound("medien/bonus.wav")
             fail_sound = mixer.Sound("medien/fail.wav")
             end_sound = mixer.Sound("medien/end.wav")
-            if debug: print("Audio wurde geladen")
+            if debug: print("\033[0;36;40mAudio wurde geladen")
         except:
             audio = False
-            if debug: print("Audio konnte nicht geladen werden")
+            if debug: print("\033[0;31;40mAudio konnte nicht geladen werden")
 
 # funktions-schleife:
 # -> warte auf input
@@ -74,6 +76,7 @@ def main():
     global running
 
     if demo:
+        print("\033[0;35;40mStarte Demo-Modus")
         while True:
             for s in ["start", "bonus", "fail", "bonus", "bonus", "fail", "bonus", "ende"]:
                 get_time(s, segmente[s][randint(0, len(segmente[s]) - 1)])
@@ -88,7 +91,7 @@ def main():
         for key, value in segmente.items():
             for pin in value:
                 if not GPIO.input(pin):
-                    if debug: print("\nPin {} wurde berührt | Key = {}".format(pin, key))
+                    if debug: print("\n\033[0;37;40mPin \033[0;33;40m{}\033[0;37;40m wurde berührt | Key =\033[0;3;40m {}\033[0;37;40m".format(pin, key))
                     
                     if running == False:
                         if key == "start":
@@ -159,7 +162,9 @@ def fail():
 
 def auswertung():
     global punkte, startzeit, zeitenListe
-    if debug: print("auswertung()")
+    if debug: 
+        print("auswertung()")
+        print("\tPunkte: "+str(punkte)+"\n\tStartzeit: "+str(startzeit)+"\tzeitenListe:\n"+str(zeitenListe)+"\n")
     zeit = time()
     sock.send(bytes("medien/punkte/punkte:" + str("Auswertung:"), "UTF-8"))
     sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) #ausblenden "See-Base"
@@ -218,31 +223,31 @@ def reset():
 # komandozeilenargumente
 for i in argv:
     if i in ["--help", "-h", "/h", "/help", "?", "h"]:
-        print("\n{0} - \n".format(spielName, spielNameZusatz))
-        print("Quelle: https://github.com/see-base/schwebedraht\n\n")
-        print("Moegliche Befehle:\n\t--help\t- Zeigt diese Hilfe an")
-        print("\t-v\t- Zeigt die Version des Spieles")
-        print("\t--debug\t- Debug Modus...")
-        print("\t--demo\t- Demo Modus")
-        print("\t--no-audio\t- Keine Audioausgabe")
-        print("\n")
+        print("\n\033[1;32;40m {0} \033[1;37;40m-\033[1;34;40m {1}\n".format(spielName, spielNameZusatz))
+        print("\033[0;37;40m Quelle: https://github.com/see-base/schwebedraht\n\n")
+        print("\033[0;33;40mMoegliche Befehle:\n\033[0;33;40m\t --help \t\033[0;37;40m-\033[0;36;40m Zeigt diese Hilfe an")
+        print("\t\033[0;33;40m --version\t\033[0;37;40m-\033[0;36;40m Zeigt die Version des Spieles")
+        print("\t\033[0;33;40m --debug\t\033[0;37;40m-\033[0;36;40m Debug Modus...")
+        print("\t\033[0;33;40m --demo  \t\033[0;37;40m-\033[0;36;40m Demo Modus")
+        print("\t\033[0;33;40m --no-audio\t\033[0;37;40m-\033[0;36;40m Keine Audioausgabe")
+        print("\n\033[0;37;40m")
         exit()
     elif i in ["-v", "--version"]:
-        print("\n{0} - {1}\n\nVersion:\t{2}\n".format(spielName, spielNameZusatz, version))
+        print("\n\033[1;32;40m {0} \033[1;37;40m-\033[1;34;40m {1}\n\033[1;36;40m\n Version:\t{2}\n".format(spielName, spielNameZusatz, version))
         exit()
     elif i == "--debug":
         debug = True
-        print("Debug Modus")
+        print("\033[0;36;40mDebug Modus")
     elif i == "--demo":
         demo = True
-        print("Demo Modus")
+        print("\033[0;36;40mDemo Modus")
     elif i == "--no-audio":
         audio = False
-        print("Keine Audioausgabe")
+        print("\033[0;36;40mKeine Audioausgabe")
 
-if debug: print("Spiel wird vorbereitet")
+if debug: print("\033[0;36;40mSpiel wird vorbereitet")
 setup()
-if debug: print("Spiel wird gestartet")
+if debug: print("\033[0;36;40mSpiel wird gestartet")
 try:
     main()
 except KeyboardInterrupt:
