@@ -1,7 +1,7 @@
 ##Das Punktesystem beim Schwebedraht:
 
 Das tolle an diesem Spiel ist unter anderem, dass man die moeglichkeit hat Punkte zu erzielen kann und diese auch in einer Highscore-Liste auftauchen koennten.
-Doch bevor man die Punkte erzielt, muessen diese erst einmal verdient werden. Dies geschieht durch BerÃuehren der Bonus segmente in bestimmten Zeiten und ein wenig Glueck!
+Doch bevor man die Punkte erzielt, muessen diese erst einmal verdient werden. Dies geschieht durch Beruehren der Bonus segmente in bestimmten Zeiten und ein wenig Glueck!
 
 #Spielen
 Mit dem Beruehren des Start-Segments aktiviert man das Spiel und es koennen Punkte verdient werden. Beim Erhalten von `PUNKTEN` ertÃnt ein Sound und es erscheint ein allgemein eher als Belohnung wazunehmendes Symbol auf dem Display. Beispielsweise ein Stern.
@@ -32,7 +32,7 @@ def get_time(name, pin):
 
 ##punkte_setzen:
 
-In dieser Funktion werden als erstes die Eintraege aus der `zeitenListe` wieder auf einzelne variablen aufgeteilt. AuÃŸerdem werden die Globalen variablen `punkte` Und der punkte Multiplikator verwendet.
+In dieser Funktion werden als erstes die Eintraege aus der `zeitenListe` wieder auf einzelne variablen aufgeteilt. Außerdem werden die Globalen variablen `punkte` Und der punkte Multiplikator verwendet.
 
 ```python
 
@@ -47,9 +47,9 @@ Ist die beruehrte Stelle eine Bonus-Stelle, dann wird als erstes geprueft, ob di
 Ist dem nicht der Fall, koennen folgende Sachen passieren:
  - Hat man diese Bonusstelle innerhalb von 5 Sekunden erreicht, verdoppelt sich der Multiplikator.
  - Hat man diese Bonusstelle innerhalb von 10 Sekunden erreicht, so erhoeht sich der Multiplikator um `1`!
- - Hat man aber laenger als 15 Sekunden gebraucht, so geht der Multiplikator um 1 Zurueck!
+ - Hat man aber laenger als 15 Sekunden gebraucht, so wird der Multiplikator auf `1` zurueck gesetzt!
 
-Schliesslich werden die Punkte um eine zufaellige Zahl zwischen 10 und 50 erzeugt und mit dem Multiplikator multipliziert. Und dann auch dem Gesamt-Punktestand hinzugefuegt.
+Schließlich werden die Punkte um eine zufaellige Zahl zwischen 10 und 50 erzeugt und mit dem Multiplikator multipliziert. Und dann auch dem Gesamt-Punktestand hinzugefuegt.
 
 ```python
 
