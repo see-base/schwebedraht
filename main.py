@@ -38,7 +38,7 @@ punkte = 0
 p_multiplikator = 1
 
 def setup():
-    global audio, sock
+    global audio, sock, start_sound, bonus_sound, fail_sound, end_sound
     print("\n\033[1;32;40m {0} \033[1;37;40m-\033[1;34;40m {1}\n".format(spielName, spielNameZusatz))
 
     #UDP-Socket einstellen
