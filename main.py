@@ -171,7 +171,7 @@ def auswertung():
     sock.send(bytes("medien/ausw:" + str("1"), "UTF-8")) #einblenden auswertung-node
     # Senden der Punkte
     sock.send(bytes("medien/auswertung/punkte:" + str(punkte), "UTF-8")) # Gesamtpunkte
-    sock.send(bytes("medien/auswertung/zeit:" + str(zeit - startzeit), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/zeit:" + str("%.4f" %(zeit - startzeit)), "UTF-8")) # Gesamtzeit
     # Die einzelnen Segmente:
     for liste in zeitenListe:
         if debug: print("Auswertung der zeitenListe:")
@@ -179,15 +179,17 @@ def auswertung():
 
     #
     # DRAFT:
+    #  ganz unordentlich zusammengecodete Punkteauswertung
+    #   um mal irgendwie eine Vorstellung zu haben, wie das so sein koennte!
     #
 
 
-    # S. = anfang, ende, ges.zeit, beruehrt
-    seg1 = [False, False, False, False]
-    seg2 = [False, False, False, False]
-    seg3 = [False, False, False, False]
-    seg4 = [False, False, False, False]
-    seg5 = [False, False, False, False]
+ #Segment= anfang, ende, gesamtZeit, beruehrt
+    seg1 = [False, False, False, 0]
+    seg2 = [False, False, False, 0]
+    seg3 = [False, False, False, 0]
+    seg4 = [False, False, False, 0]
+    seg5 = [False, False, False, 0]
     for liste in zeitenListe:
         print(str(liste))
         gpio, beruehrung = liste
@@ -282,14 +284,38 @@ def auswertung():
 
 
         # Punkte zahlen:
+        # Wird bisher zu fehler fuehren, wenn nicht JEDE Bonusstelle beruehrt wurde!
+        # 2DO:
+        # zB.:
+        #   WENN 2. Bonus nicht beruehrt, ABER 1. Bonus beruehrt UND 3. bonus beruehrt:
+        #   DANN Segment2 (bonus-1 bis bonus-2) UND Segment3 (bonus-2 bis bonus-3) IST Zeit von bonus-1 nach bonus-3
         seg1[2] = seg1[1] - seg1[0]
+        seg2[2] = seg2[1] - seg2[0]
+        seg3[2] = seg3[1] - seg3[0]
+        seg4[2] = seg4[1] - seg4[0]
+        seg5[2] = seg5[1] - seg5[0]
 
-        
-    sock.send(bytes("medien/auswertung/segment1:" + str(seg1), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment2:" + str(seg2), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment3:" + str(seg3), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment4:" + str(seg4), "UTF-8")) # Gesamtzeit
-    sock.send(bytes("medien/auswertung/segment5:" + str(seg5), "UTF-8")) # Gesamtzeit
+
+
+    # Punkte: ??, Beruehrungen: ??    
+    sock.send(bytes("medien/auswertung/segment1a:" + str("Zeit: %.2f"%(seg1[2])), "UTF-8")) # 1. Segment - Zeit
+    sock.send(bytes("medien/auswertung/segment1b:" + str(str(seg1[3]) +" x Berührt"), "UTF-8"))  # 1. Segment - Beruehrungen
+    sock.send(bytes("medien/auswertung/segment2a:" + str("Zeit: %.2f"%(seg2[2])), "UTF-8")) # 2. Segment - Zeit
+    sock.send(bytes("medien/auswertung/segment2b:" + str(str(seg2[3]) +" x Berührt"), "UTF-8"))  #2. Segment - Beruehrungen
+    sock.send(bytes("medien/auswertung/segment3a:" + str("Zeit: %.2f"%(seg3[2])), "UTF-8")) # 3. Segment - Zeit
+    sock.send(bytes("medien/auswertung/segment3b:" + str(str(seg3[3]) +" x Berührt"), "UTF-8"))  #3. Segment - Beruehrungen
+    sock.send(bytes("medien/auswertung/segment4a:" + str("Zeit: %.2f"%(seg4[2])), "UTF-8")) # 4. Segment - Zeit
+    sock.send(bytes("medien/auswertung/segment4b:" + str(str(seg4[3]) +" x Berührt"), "UTF-8"))  #4. Segment - Beruehrungen
+    sock.send(bytes("medien/auswertung/segment5a:" + str("Zeit: %.2f"%(seg5[2])), "UTF-8")) # 5. Segment - Zeit
+    sock.send(bytes("medien/auswertung/segment5b:" + str(str(seg5[3]) +" x Berührt"), "UTF-8"))  #5. Segment - Beruehrungen
+
+
+
+
+    sock.send(bytes("medien/auswertung/segment2:" + str("Zeit: %.1f - %.0f x Berührt"%(seg2[2], seg2[3])), "UTF-8")) # 2. Segment
+    sock.send(bytes("medien/auswertung/segment3:" + str("Zeit: %.1f - %.0f x Berührt"%(seg3[2], seg3[3])), "UTF-8")) # 3. Segment
+    sock.send(bytes("medien/auswertung/segment4:" + str("Zeit: %.1f - %.0f x Berührt"%(seg4[2], seg4[3])), "UTF-8")) # 4. Segment
+    sock.send(bytes("medien/auswertung/segment5:" + str("Zeit: %.1f - %.0f x Berührt"%(seg5[2], seg5[3])), "UTF-8")) # 5. Segment
  
 def highscoreliste():
     # blendet bei laengerem idlen die aktuelle Highscoreliste ein

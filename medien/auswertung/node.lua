@@ -14,11 +14,17 @@ time = sys.now()
 alpha = 1
 --Segmente
 beta = 0
-segment1 = "Punkte: ??, Zeit: ??"
-segment2 = "Punkte: ??, Zeit: ??"
-segment3 = "Punkte: ??, Zeit: ??"
-segment4 = "Punkte: ??, Zeit: ??"
-segment5 = "Punkte: ??, Zeit: ??"
+segment1a = "Punkte: ??"
+segment2a = "Punkte: ??"
+segment3a = "Punkte: ??"
+segment4a = "Punkte: ??"
+segment5a = "Punkte: ??"
+
+segment1b = "? x Beruert"
+segment2b = "? x Beruert"
+segment3b = "? x Beruert"
+segment4b = "? x Beruert"
+segment5b = "? x Beruert"
 
 util.data_mapper { --Daten via UDP Empfangen
     ["zeit"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
@@ -41,30 +47,56 @@ util.data_mapper { --Daten via UDP Empfangen
     end
 }
 util.data_mapper { --Daten via UDP Empfangen
-    ["segment1"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
-        segment1 = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    ["segment1a"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment1a = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
     end
 }
 util.data_mapper { --Daten via UDP Empfangen
-    ["segment2"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
-        segment2 = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    ["segment2a"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment2a = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
     end
 }
 util.data_mapper { --Daten via UDP Empfangen
-    ["segment3"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
-        segment3 = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    ["segment3a"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment3a = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
     end
 }
 util.data_mapper { --Daten via UDP Empfangen
-    ["segment4"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
-        segment4 = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    ["segment4a"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment4a = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
     end
 }
 util.data_mapper { --Daten via UDP Empfangen
-    ["segment5"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
-        segment5 = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    ["segment5a"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment5a = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
     end
 }
+util.data_mapper { --Daten via UDP Empfangen
+    ["segment1b"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment1b = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    end
+}
+util.data_mapper { --Daten via UDP Empfangen
+    ["segment2b"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment2b = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    end
+}
+util.data_mapper { --Daten via UDP Empfangen
+    ["segment3b"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment3b = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    end
+}
+util.data_mapper { --Daten via UDP Empfangen
+    ["segment4b"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment4b = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    end
+}
+util.data_mapper { --Daten via UDP Empfangen
+    ["segment5b"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
+        segment5b = value  --Die Variable punkte im info-beamer hat den von Python3 uebergebenen Wert
+    end
+}
+
 
 --Rendere den Infobeamer   
 function node.render()
@@ -89,16 +121,21 @@ function node.render()
     font:write(150, 710, "in die Highscore Liste aufgenommen wird!", 32, 1,1,0,alpha)
 
     --Segmentauswertung
-    congress:write(40, 170, "1. Segment:", 60, 0,1,1,beta)
-    font:write(400, 170, segment1, 60, 1,1,0,beta)
-    congress:write(40, 270, "2. Segment:", 60, 0,1,1,beta)
-    font:write(400, 270, segment2, 60, 1,1,0,beta)   
-    congress:write(40, 370, "3. Segment:", 60, 0,1,1,beta)
-    font:write(400, 370, segment3, 60, 1,1,0,beta)
-    congress:write(40, 470, "4. Segment:", 60, 0,1,1,beta)
-    font:write(400, 470, segment4, 60, 1,1,0,beta)   
-    congress:write(40, 570, "5. Segment:", 60, 0,1,1,beta)
-    font:write(400, 570, segment5, 60, 1,1,0,beta)
+    congress:write(20, 170, "1. Segment:", 60, 0,1,1,beta)
+    font:write(380, 170, segment1a, 60, 1,1,0,beta)
+    font:write(700, 170, segment1b, 60, 1,1,0,beta)
+    congress:write(20, 270, "2. Segment:", 60, 0,1,1,beta)
+    font:write(380, 270, segment2a, 60, 1,1,0,beta)   
+    font:write(700, 270, segment2b, 60, 1,1,0,beta)
+    congress:write(20, 370, "3. Segment:", 60, 0,1,1,beta)
+    font:write(380, 370, segment3a, 60, 1,1,0,beta)
+    font:write(700, 370, segment3b, 60, 1,1,0,beta)
+    congress:write(20, 470, "4. Segment:", 60, 0,1,1,beta)
+    font:write(380, 470, segment4a, 60, 1,1,0,beta)   
+    font:write(700, 470, segment4b, 60, 1,1,0,beta)
+    congress:write(20, 570, "5. Segment:", 60, 0,1,1,beta)
+    font:write(380, 570, segment5a, 60, 1,1,0,beta)
+    font:write(700, 570, segment5b, 60, 1,1,0,beta)
  
 
 end
