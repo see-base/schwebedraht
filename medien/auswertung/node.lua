@@ -107,35 +107,35 @@ function node.render()
     end
     --Gesampauswertung:
     --Anzeige Zeit:
-    congress:write(170, 210, "Zeit:", 105, 0,1,1,alpha)
-    font:write(450, 210, zeit, 105, 1, 1, 0, alpha)
+    congress:write(210, 210, "ZEIT:", 105, 0,1,1,alpha)
+    font:write(500, 210, zeit, 105, 1, 1, 0, alpha)
     
     --Anzeige Punkte:
-    congress:write(30, 380, "Punkte:", 105, 1,1,0,alpha)
-    font:write(450, 380, punkte, 105, 0,1,1,alpha)
+    congress:write(10, 380, "PUNKTE:", 105, 1,1,0,alpha)
+    font:write(500, 380, punkte, 105, 0,1,1,alpha)
 
     --Anzeige Unique Nick:
-    congress:write(160, 550, "Nick:", 105, 0,1,1,alpha)
-    font:write(450, 550, nick, 105, 0.5,1,0,alpha)
+    congress:write(180, 550, "NICK:", 105, 0,1,1,alpha)
+    font:write(500, 550, nick, 105, 0.5,1,0,alpha)
     font:write(60, 670, nick.." ist ein unique Name, mit dem dieser Punktestand", 32, 1,1,0,alpha)
     font:write(150, 710, "in die Highscore Liste aufgenommen wird!", 32, 1,1,0,alpha)
 
     --Segmentauswertung
-    congress:write(20, 170, "1. Segment:", 60, 0,1,1,beta)
-    font:write(380, 170, segment1a, 60, 1,1,0,beta)
-    font:write(700, 170, segment1b, 60, 1,1,0,beta)
-    congress:write(20, 270, "2. Segment:", 60, 0,1,1,beta)
-    font:write(380, 270, segment2a, 60, 1,1,0,beta)   
-    font:write(700, 270, segment2b, 60, 1,1,0,beta)
-    congress:write(20, 370, "3. Segment:", 60, 0,1,1,beta)
-    font:write(380, 370, segment3a, 60, 1,1,0,beta)
-    font:write(700, 370, segment3b, 60, 1,1,0,beta)
-    congress:write(20, 470, "4. Segment:", 60, 0,1,1,beta)
-    font:write(380, 470, segment4a, 60, 1,1,0,beta)   
-    font:write(700, 470, segment4b, 60, 1,1,0,beta)
-    congress:write(20, 570, "5. Segment:", 60, 0,1,1,beta)
-    font:write(380, 570, segment5a, 60, 1,1,0,beta)
-    font:write(700, 570, segment5b, 60, 1,1,0,beta)
+    congress:write(5, 170, "1. SEGMENT:", 60, 0,1,1,beta)
+    font:write(410, 170, segment1a, 60, 1,1,0,beta)
+    font:write(710, 170, segment1b, 60, 1,1,0,beta)
+    congress:write(5, 270, "2. SEGMENT:", 60, 0,1,1,beta)
+    font:write(410, 270, segment2a, 60, 1,1,0,beta)   
+    font:write(710, 270, segment2b, 60, 1,1,0,beta)
+    congress:write(5, 370, "3. SEGMENT:", 60, 0,1,1,beta)
+    font:write(410, 370, segment3a, 60, 1,1,0,beta)
+    font:write(710, 370, segment3b, 60, 1,1,0,beta)
+    congress:write(5, 470, "4. SEGMENT:", 60, 0,1,1,beta)
+    font:write(410, 470, segment4a, 60, 1,1,0,beta)   
+    font:write(710, 470, segment4b, 60, 1,1,0,beta)
+    congress:write(5, 570, "5. SEGMENT:", 60, 0,1,1,beta)
+    font:write(410, 570, segment5a, 60, 1,1,0,beta)
+    font:write(710, 570, segment5b, 60, 1,1,0,beta)
  
 
 end
