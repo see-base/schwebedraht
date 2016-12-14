@@ -16,7 +16,7 @@ from pygame import mixer
 # Globale Variabeln:
 spielName = "Schwebedraht"
 spielNameZusatz = "Ein Spiel der see-base"
-version = "0.3"
+version = "0.4"
 
 segmente = {
     "start": [12],
@@ -64,7 +64,7 @@ def setup():
             if debug: print("\033[0;36;40mAudio wurde geladen")
         except:
             audio = False
-            if debug: print("\033[0;31;40mAudio konnte nicht geladen werden")
+            if debug: print("\033[0;31;40mAudio konnte nicht geladen werden\n\t->  Fehler beim Laden der Audiodaten\n\t--> Moeglicherweise sind keine Audiodaten vorhanden?!?\n")
 
 # funktions-schleife:
 # -> warte auf input
@@ -140,7 +140,8 @@ def ende():
     # Statistiken fuer das Ende
     # Genaue Aufschlüsselung des extrem komplizierten und geilen *hust hust* Punktesystem
     if audio: mixer.Sound.play(end_sound)
-    auswertung()
+    nick = unique_nick()
+    auswertung(nick)
     reset()
 
 def bonus():
@@ -160,7 +161,7 @@ def fail():
     sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
     if audio: mixer.Sound.play(fail_sound)
 
-def auswertung():
+def auswertung(nick):
     global punkte, startzeit, zeitenListe
     if debug: 
         print("auswertung()")
@@ -172,6 +173,7 @@ def auswertung():
     # Senden der Punkte
     sock.send(bytes("medien/auswertung/punkte:" + str(punkte), "UTF-8")) # Gesamtpunkte
     sock.send(bytes("medien/auswertung/zeit:" + str("%.4f" %(zeit - startzeit)), "UTF-8")) # Gesamtzeit
+    sock.send(bytes("medien/auswertung/nick:" + str(nick), "UTF-8")) # Unique Nickname
     # Die einzelnen Segmente:
     for liste in zeitenListe:
         if debug: print("Auswertung der zeitenListe:")
@@ -348,6 +350,26 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
             beruehrt += 1
     sock.send(bytes("medien/punkte/punkte:{} | {}".format(punkte, beruehrt), "UTF-8"))
     if debug: print("Punkte: {} | Multiplikator: {} | Berührungen: {}".format(punkte, p_multiplikator, beruehrt))
+
+def unique_nick():
+    if debug: print("Generate Unique Nick")
+    char = [65, 69, 73, 79, 85, 97, 101, 105, 111, 117 ]
+    g_nick = [ randint(65, 90), randint(97, 112), randint(97, 112), randint(97, 112)]
+    i = 0
+    j = 0
+    nick = ""
+    while i < len(g_nick):
+        if g_nick not in char:
+            j += 1
+        else: j -= 1
+        if j == 2:
+            g_nick[i] = char[randint(4, int(len(char)-1))]
+            j = 0
+        nick = nick + chr(int(g_nick[i]))
+        i += 1
+    nick = nick + str(randint(0,99))
+    if debug: print("Nick: "+nick)
+    return(str(nick))
 
 def reset():
     if debug: print("reset")
