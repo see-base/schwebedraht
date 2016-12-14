@@ -284,13 +284,77 @@ def auswertung(nick):
             else:
                 if seg5[1] > beruehrung: seg5[1] = beruehrung
 
-
+        #
         # Punkte zahlen:
         # Wird bisher zu fehler fuehren, wenn nicht JEDE Bonusstelle beruehrt wurde!
         # 2DO:
         # zB.:
         #   WENN 2. Bonus nicht beruehrt, ABER 1. Bonus beruehrt UND 3. bonus beruehrt:
         #   DANN Segment2 (bonus-1 bis bonus-2) UND Segment3 (bonus-2 bis bonus-3) IST Zeit von bonus-1 nach bonus-3
+        #
+
+        if seg1[1] == False:
+            if seg2[1] != False:
+                seg1[1] = ( seg2[1] - seg1[0] ) / 2
+                seg2[0] = seg1[1]
+            elif seg3[1] != False:
+                seg1[1] = ( seg3[1] - seg1[0] ) / 3
+                seg2[0] = seg1[1]
+                seg2[1] = seg1[1] * 2
+                seg3[0] = seg2[1]
+            elif seg4[1] != False:
+                seg1[1] = ( seg4[1] - seg1[0] ) / 4
+                seg2[0] = seg1[1]
+                seg2[1] = seg1[1] * 2
+                seg3[0] = seg2[1]
+                seg3[1] = seg1[1] * 3
+                seg4[0] = seg3[1]
+            elif seg5[1] != False:
+                seg1[1] = ( seg5[1] - seg1[0] ) / 5
+                seg2[0] = seg1[1]
+                seg2[1] = seg1[1] * 2
+                seg3[0] = seg2[1]
+                seg3[1] = seg1[1] * 3
+                seg4[0] = seg3[1]
+                seg4[1] = seg1[1] * 4
+                seg5[0] = seg4[1]
+
+
+        if seg2[1] == False:
+            if seg3[1] != False:
+                seg2[1] = ( seg3[1] - seg2[0] ) / 2
+                seg3[0] = seg2[1]
+            elif seg4[1] != False:
+                seg2[1] = ( seg4[1] - seg2[0] ) / 3
+                seg3[0] = seg2[1]
+                seg3[1] = seg2[1] * 2
+                seg4[0] = seg3[1]
+            elif seg5[1] != False:
+                seg2[1] = ( seg5[1] - seg2[0] ) / 4
+                seg3[0] = seg2[1]
+                seg3[1] = seg2[1] * 2
+                seg4[0] = seg3[1]
+                seg4[1] = seg2[1] * 3
+                seg5[0] = seg4[1]
+
+
+        if seg3[1] == False:
+            if seg4[1] != False:
+                seg3[1] = ( seg4[1] - seg3[0] ) / 2
+                seg4[0] = seg3[1]
+            elif seg5[1] != False:
+                seg3[1] = ( seg5[1] - seg3[0] ) / 3
+                seg4[0] = seg3[1]
+                seg4[1] = seg3[1] * 2
+                seg5[0] = seg4[1]
+
+        if seg4[1] == False:
+            if seg5[1] != False:
+                seg4[1] = ( seg5[1] - seg4[0] ) / 2
+                seg5[0] = seg4[1]
+
+
+        # Gesamtpunktzahl zusammenzaehlen:
         seg1[2] = seg1[1] - seg1[0]
         seg2[2] = seg2[1] - seg2[0]
         seg3[2] = seg3[1] - seg3[0]
@@ -311,13 +375,6 @@ def auswertung(nick):
     sock.send(bytes("medien/auswertung/segment5a:" + str("Zeit: %.2f"%(seg5[2])), "UTF-8")) # 5. Segment - Zeit
     sock.send(bytes("medien/auswertung/segment5b:" + str(str(seg5[3]) +" x Berührt"), "UTF-8"))  #5. Segment - Beruehrungen
 
-
-
-
-    sock.send(bytes("medien/auswertung/segment2:" + str("Zeit: %.1f - %.0f x Berührt"%(seg2[2], seg2[3])), "UTF-8")) # 2. Segment
-    sock.send(bytes("medien/auswertung/segment3:" + str("Zeit: %.1f - %.0f x Berührt"%(seg3[2], seg3[3])), "UTF-8")) # 3. Segment
-    sock.send(bytes("medien/auswertung/segment4:" + str("Zeit: %.1f - %.0f x Berührt"%(seg4[2], seg4[3])), "UTF-8")) # 4. Segment
-    sock.send(bytes("medien/auswertung/segment5:" + str("Zeit: %.1f - %.0f x Berührt"%(seg5[2], seg5[3])), "UTF-8")) # 5. Segment
  
 def highscoreliste():
     # blendet bei laengerem idlen die aktuelle Highscoreliste ein
@@ -354,16 +411,16 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
 def unique_nick():
     if debug: print("Generate Unique Nick")
     char = [65, 69, 73, 79, 85, 97, 101, 105, 111, 117 ]
-    g_nick = [ randint(65, 90), randint(97, 112), randint(97, 112), randint(97, 112)]
+    g_nick = [ randint(65, 90), randint(97, 122), randint(97, 122), randint(97, 122)]
     i = 0
     j = 0
     nick = ""
     while i < len(g_nick):
-        if g_nick not in char:
+        if g_nick[i] not in char:
             j += 1
         else: j -= 1
         if j == 2:
-            g_nick[i] = char[randint(4, int(len(char)-1))]
+            g_nick[i] = char[randint(5, int(len(char)-1))]
             j = 0
         nick = nick + chr(int(g_nick[i]))
         i += 1
