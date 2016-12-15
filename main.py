@@ -196,7 +196,7 @@ def auswertung(nick):
     seg4 = [False, False, False, 0]
     seg5 = [False, False, False, 0]
     for liste in zeitenListe:
-        print(str(liste))
+        if debug: print(str(liste))
         gpio, beruehrung = liste
         zustand = False
         for a, b in segmente.items():
