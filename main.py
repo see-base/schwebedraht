@@ -65,6 +65,9 @@ def setup():
         except:
             audio = False
             if debug: print("\033[0;31;40mAudio konnte nicht geladen werden\n\t->  Fehler beim Laden der Audiodaten\n\t--> Moeglicherweise sind keine Audiodaten vorhanden?!?\n")
+    # Signalisiere Verbindung:
+    sock.send(bytes("medien/connected:1", "UTF-8"))
+    sock.send(bytes("medien/punkte/punkte:#see-base", "UTF-8"))
 
 # funktions-schleife:
 # -> warte auf input
@@ -469,4 +472,6 @@ try:
     main()
 except KeyboardInterrupt:
     # diese zeile spaeter durch reset-funktion beim start ersetzen.
-    sock.send(bytes("medien/punkte/punkte:0 | 1", "UTF-8"))
+    # Spiel auf "disconnected" stellen!
+    sock.send(bytes("medien/punkte/punkte:#see-base", "UTF-8"))
+    sock.send(bytes("medien/connected:0", "UTF-8"))

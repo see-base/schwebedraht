@@ -7,6 +7,8 @@ node.gc()
 local congress = resource.load_font("33c3.ttf")
 local font = resource.load_font("Lato-Regular.ttf")
 
+connected = 0 -- Ist der schwebedraht aktiv und sendet Daten zum Info-Beamer?
+
 hintergrund_child = "hintergrund" -- Node fuer Hintergrund Bild/Animation/Wasauchimmer
 effekt_child = "effekt" -- Node fuer Effekte bei einem Event
 punkte_child = "punkte" -- Node fuer die Punkteanzeige
@@ -26,11 +28,13 @@ starttime = 0
 util.data_mapper {
     ["ausw"] = function(value)
         auswertung = value
+         connected = 1
     end
 }
 util.data_mapper {
     ["effekt_fade"] = function(value)
         effekt_sichtbar = value
+        connected = 1
     end
 }
 util.data_mapper {
@@ -39,6 +43,7 @@ util.data_mapper {
         zoom = value
         effekt_sichtbar = 1
         zoom_expo = 0 
+        connected = 1
         starttime = sys.now()
     end
 }
@@ -46,12 +51,14 @@ util.data_mapper {
     ["zoom_multipler"] = function(value)
         zoom_multipler = value
         effekt_sichtbar = 0
+        connected = 1
     end
 }
 util.data_mapper {
     ["zoom_exponential"] = function(value)
         zoom_exponential = value
         effekt_sichtbar = 0
+        connected = 1
     end
 }
 util.data_mapper {
@@ -65,12 +72,19 @@ util.data_mapper {
         else
             z_fade = 1
         end
+        connected = 1
     end
 }
 util.data_mapper {
     ["zoom_fade_option"] = function(value)
         zoom_fade_option = value + 0.1
         effekt_sichtbar = 0
+        connected = 1
+    end
+}
+util.data_mapper {
+    ["connected"] = function(value)
+        connected = value
     end
 }
 
@@ -89,5 +103,7 @@ function node.render()
     hintergrund = resource.render_child(hintergrund_child):draw(0, 0, WIDTH, HEIGHT, 1):dispose()
     resource.render_child(auswertung_child):draw(0, 0, WIDTH, HEIGHT, auswertung):dispose()
     resource.render_child(effekt_child):draw(WIDTH / 2 - zoom / 2, HEIGHT / 2 - zoom / 2, WIDTH / 2 + zoom / 2, HEIGHT / 2 + zoom / 2, effekt_sichtbar):dispose()
-    resource.render_child(punkte_child):draw(256, 0, 768, 130, 1):dispose()
+    if (connected == 1) then
+        resource.render_child(punkte_child):draw(256, 0, 768, 130, 1):dispose()
+    end
 end
