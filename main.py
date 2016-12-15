@@ -16,7 +16,7 @@ from pygame import mixer
 # Globale Variabeln:
 spielName = "Schwebedraht"
 spielNameZusatz = "Ein Spiel der see-base"
-version = "0.4"
+version = "0.5"
 
 segmente = {
     "start": [12],
