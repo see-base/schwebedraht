@@ -4,7 +4,7 @@ gl.setup(1024, 750)
 local congress = resource.load_font("33c3.ttf")
 local font = resource.load_font("Lato-Regular.ttf")
 local video = resource.load_video{
-    file = "deepspace.mkv";
+    file = "matrix_animation.mp4";
     looped = true;
 }
 alpha = 1
