@@ -31,7 +31,7 @@ print("Initializing the device ..")
 ser.write(bytes(0x00))
 
 print("Write bytes:")
-ser.write (bytes("ID:42;INT:11;BAT:79;TMP:18;\n", "UTF-8"))
-print(bytes("ID:42;INT:11;BAT:79;TMP:18;\n", "UTF-8"))
+ser.write (bytes("ID:42;INT:11;BAT:79;F:100;\n", "UTF-8"))
+print(bytes("ID:42;INT:11;BAT:79;F:100;\n", "UTF-8"))
 
 print('Done')
