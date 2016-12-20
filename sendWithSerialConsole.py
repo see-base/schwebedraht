@@ -8,6 +8,7 @@
 # Dieses kleine Script dient zum virtualisieren der WANDler
 #
 import serial
+from random import randint
 
 ser = serial.Serial(
             port='/dev/ttyUSB0',
@@ -31,7 +32,10 @@ print("Initializing the device ..")
 ser.write(bytes(0x00))
 
 print("Write bytes:")
-ser.write (bytes("ID:42;INT:11;BAT:79;F:100;\n", "UTF-8"))
-print(bytes("ID:42;INT:11;BAT:79;F:100;\n", "UTF-8"))
+data="ID:0"+str(randint(0,4))+";INT:0"+str(randint(0,6))+";BAT:"+str(randint(10,99))+";F:"+str(randint(0,4))+"00;\n"
+ser.write(bytes(data, "UTF-8"))
+print(bytes(data, "UTF-8"))
+#ser.write (bytes("ID:42;INT:11;BAT:79;F:100;\n", "UTF-8"))
+#print(bytes("ID:42;INT:11;BAT:79;F:100;\n", "UTF-8"))
 
 print('Done')
