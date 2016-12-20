@@ -68,6 +68,16 @@ def setup():
     # Signalisiere Verbindung:
     sock.send(bytes("medien/connected:True", "UTF-8"))
     sock.send(bytes("medien/punkte/punkte:#see-base", "UTF-8"))
+    
+    #Serielle Schnittstelle initialisieren
+    try:
+       ser = serial.Serial(**bco_port**, timeout=None, baudrate=115000, xonxoff=False, rtscts=False, dsrdtr=False)
+       ser.flushInput()
+       ser.flushOutput()
+
+def getserialinput():
+    data_raw = ser.readline()
+    return(data_raw)
 
 # funktions-schleife:
 # -> warte auf input
