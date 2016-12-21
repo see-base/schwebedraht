@@ -8,7 +8,7 @@
 from sys import argv # fuer die kommandozeilenargumente
 import RPi.GPIO as GPIO # raspi gpio-pins
 from time import time, sleep # fuer zeitmessung und pausen
-from random import randint # fuers punktesystem
+from random import randint, choice # fuers punktesystem
 import math
 import socket # udp-kommunikation
 from pygame import mixer
@@ -413,23 +413,14 @@ def punkte_setzen(aktuelle_zeit, letzte_zeit):
 
 def unique_nick():
     if debug: print("Generate Unique Nick")
-    char = [65, 69, 73, 79, 85, 97, 101, 105, 111, 117 ]
-    g_nick = [ randint(65, 90), randint(97, 122), randint(97, 122), randint(97, 122)]
-    i = 0
-    j = 0
-    nick = ""
-    while i < len(g_nick):
-        if g_nick[i] not in char:
-            j += 1
-        else: j -= 1
-        if j == 2:
-            g_nick[i] = char[randint(5, int(len(char)-1))]
-            j = 0
-        nick = nick + chr(int(g_nick[i]))
-        i += 1
-    nick = nick + str(randint(0,99))
-    if debug: print("Nick: "+nick)
-    return(str(nick))
+    char = ['a', 'e', 'i', 'o', 'u']
+    nick = ( chr(randint(97, 122)).upper()
+        + random.choice(char)
+        + chr(randint(97, 122))
+        + random.choice(char)
+        + str(randint(10, 99)) )
+    if debug: print("Nick: "+ nick)
+    return nick
 
 def reset():
     if debug: print("reset")
