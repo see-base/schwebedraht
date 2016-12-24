@@ -7,7 +7,7 @@
 #
 # Dieses kleine Script dient zum virtualisieren der WANDler
 #
-import serial
+import serial, socket
 from random import randint
 from sys import argv
 
@@ -59,5 +59,13 @@ if not udp:
         print('Done')
 
 if udp:
-    print("Noch nicht implementiert")
+    # Verbindung via UDP aufbauen
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.connect(("127.0.0.1", 5005)) 
+ 
+ 
+    def sende(Nachricht): 
+        print( "Nachricht:", Nachricht )
+        sock.send(bytes(Nachricht, "UTF-8"))
+    sende(data)
 
