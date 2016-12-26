@@ -11,7 +11,7 @@ from sys import argv
 
 debug = False
 
-vfx = { "fail" : ["Pesthoernchen.png"],
+vfx = { "fail" : ["pesthorn.png"],
                     "start" : [],
                     "ziel" : ["star.png"]
     }
@@ -103,7 +103,8 @@ def visueller_effekt(vfx_index):
         prefix = spieler_liste[2][1]
     elif ID == spieler_liste[3]:
         prefix = spieler_liste[3][1]
-        
+    prefix = prefix + "-"
+    if debug: print("Prefix: "+prefix)
     if vfx_index == 0:
         sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
         sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["fail"]), "UTF-8"))
