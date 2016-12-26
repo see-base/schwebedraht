@@ -9,8 +9,8 @@ local video = resource.load_video{
 }
 alpha = 1
 titel = "Schwebedraht"
-subtitel = "Ein Spiel der see-base"
-subtitel2 = "und vom Entropia e.V."
+subtitel = "Ein gemeinsammes Projekt"
+subtitel2 = "des Hackerspaces see-base"
 
 util.data_mapper { --Daten via UDP Empfangen
     ["alpha"] = function(value) --an die Funktion punkte wird ein Wert uebergeben
@@ -27,4 +27,5 @@ function node.render()
     font:write(WIDTH / 2 - width_titel / 2, 200, titel, 120, 1, 1, 0.4, alpha) -- Ueberschrift
     font:write(WIDTH / 2 - width_subtitel / 2, 380, subtitel, 60, 0.37, 0.73, 1, alpha) -- Ueberschrift
     font:write(WIDTH / 2 - width_subtitel / 2, 450, subtitel2, 60, 0.37, 0.73, 1, alpha) -- Ueberschrift
+    font:write(WIDTH / 2 - width_subtitel / 2, 520, "     und des Entropia e.V.", 60, 0.37, 0.73, 1, alpha) -- Ueberschrift
 end
