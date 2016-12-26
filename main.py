@@ -38,7 +38,7 @@ try:
 except:
     pass
 
-spieler_liste = [(42, "green"), (23, "red"), (1337, "blue"), (0, "yellow")]
+spieler_liste = [(42, "green"), (23, "red"), (66, "blue"), (88, "yellow")]
 
 def main():
     global ID, INT, BAT, F
