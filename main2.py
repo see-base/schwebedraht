@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# Schwebedraht - ein Spiel der see-base
+#
+
 from pygame import mixer
 import socket
 import os
@@ -21,7 +27,8 @@ try:
 	sfx.append(mixer.Sound("medien/bonus.wav"))
 	sfx.append(mixer.Sound("medien/end.wav"))
 
-
+except:
+    pass
 def main():
     while True:
         ID, INT, BAT, F = serial_decoder()
@@ -52,19 +59,19 @@ def aktion(segment):
 def effekt(segment):
     if segment == 1:
         visueller_effekt(1)
-		audio_effekt(1)
+        audio_effekt(1)
     elif segment == 2:
         visueller_effekt(2)
-		audio_effekt(2)
+        audio_effekt(2)
     elif segment == 3:
         visueller_effekt(2)
-		audio_effekt(2)
+        audio_effekt(2)
     elif segment == 4:
         visueller_effekt(3)
-		audio_effekt(3)
+        audio_effekt(3)
     else:
         visueller_effekt(0)
-		audio_effekt(0)
+        audio_effekt(0)
 
 def visueller_effekt(vfx_index):
 	if vfx_index == 0:
