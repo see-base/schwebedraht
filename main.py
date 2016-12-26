@@ -60,7 +60,6 @@ def main():
                     aktion(0)
 
 def serial_decoder():
-    global ID, INT, BAT, F
     if debug: print("RAW-Input: ")
     input_string = ser.readline()
     if debug: print (input_string)
@@ -98,14 +97,14 @@ def effekt(segment):
 
 def visueller_effekt(vfx_index):
     if ID == spieler_liste[0]:
-        prefix = spieler_liste[0][1]
+        prefix = spieler_liste[0][1] + "-"
     elif ID == spieler_liste[1]:
-        prefix = spieler_liste[1][1]
+        prefix = spieler_liste[1][1] + "-"
     elif ID == spieler_liste[2]:
-        prefix = spieler_liste[2][1]
+        prefix = spieler_liste[2][1] + "-"
     elif ID == spieler_liste[3]:
-        prefix = spieler_liste[3][1]
-    prefix = prefix + "-"
+        prefix = spieler_liste[3][1] + "-"
+
     if debug: print("Prefix: "+prefix)
     if vfx_index == 0:
         sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
