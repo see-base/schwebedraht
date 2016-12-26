@@ -43,7 +43,7 @@ spieler_liste = [(42, "green"), (23, "red"), (66, "blue"), (43, "yellow")]
 def main():
     global ID, INT, BAT, F
     while True:
-        serial_decoder()
+        ID, INT, BAT, F = serial_decoder()
         if debug: print("ID:{};INT:{};BAT:{};F:{}".format(ID, INT, BAT, F))
         if ID and INT and BAT and F:
         
