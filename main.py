@@ -17,6 +17,13 @@ vfx = { "fail" : ["pesthorn.png"],
                     "start" : [],
                     "ziel" : ["star.png"]
     }
+#messung zeit - beruehrt
+spieler{0: [0, 0],
+    1: [0,0],
+    2: [0,0]
+    3: [0,0]
+}
+
 sfx = [] # 0 = fail, 1 = start, 2 = bonus, 3 = ende
 ID, INT, BAT, F = (None, None, None, None)
 
@@ -55,27 +62,25 @@ def main():
         if ID and INT and BAT and F:
         
             if INT == 2: # wenn draht beruehrt wurde
-                if F in range(90, 110): # frequenz um 100 khz, mit +-10 khz toleranz
+                if F in range(380, 420): # frequenz um 100 khz, mit +-10 khz toleranz
+                    start
                     aktion(1) #uebergibt das segment als zahl
-                elif F in range(190, 210):
-                    aktion(2)
-                elif F in range(290, 310):
-                    aktion(3)
                 elif F in range(490, 510):
                     aktion(4)
+                    #ende
                 else:
                     aktion(0)
 
 def serial_decoder():
     if debug: print("RAW-Input: ")
-    input_sting = " "
+    input_string = " "
     if serial:
         input_string = ser.readline()
     else:
         if debug: print("Waiting for UDP Line")
         data, addr = e_udp_sock.recvfrom( 1024 ) # Puffergröße: 1024 Bytes 
         input_string = data
-    if debug: print(input_sting)
+    if debug: print(input_string)
     if (len(input_string) > 28):
         input_split = input_string.decode().split(";")
 
@@ -136,7 +141,7 @@ def visueller_effekt(vfx_index):
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) # ausblenden auswertung-node
-            sock.send(bytes("medien/punkte/punkte:{}".format("00:00"), "UTF-8")) #spaeter: aktuelle zeit
+            sock.send(bytes("medien/punkte/punkte:{}".format("Los gehts!"), "UTF-8")) #spaeter: aktuelle zeit
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8"))
         elif vfx_index == 2:
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
