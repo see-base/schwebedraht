@@ -68,13 +68,15 @@ def main():
 
 def serial_decoder():
     if debug: print("RAW-Input: ")
-    input_sting = ""
+    input_sting = " "
     if serial:
         input_string = ser.readline()
     else:
-        input_sting = e_udp_sock.recvfrom( 1024 ) # Puffergröße: 1024 Bytes 
-    if debug: print (input_string)
-    if len(input_string) >= 28:
+        if debug: print("Waiting for UDP Line")
+        data, addr = e_udp_sock.recvfrom( 1024 ) # Puffergröße: 1024 Bytes 
+        input_string = data
+    if debug: print(input_sting)
+    if (len(input_string) > 28):
         input_split = input_string.decode().split(";")
 
         return (int(input_split[0][3:]),
@@ -125,15 +127,21 @@ def visueller_effekt(vfx_index):
     try: 
         if debug: print("Prefix: "+prefix)
         if vfx_index == 0:
+            sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
+            sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
             sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
             sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["fail"]), "UTF-8"))
             sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
         elif vfx_index == 1:
+            sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
+            sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) # ausblenden auswertung-node
             sock.send(bytes("medien/punkte/punkte:{}".format("00:00"), "UTF-8")) #spaeter: aktuelle zeit
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8"))
         elif vfx_index == 2:
-            sock.send(bytes("medien/zoom_exponential:" + str(1), "UTF-8"))
+            sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
+            sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
+            sock.send(bytes("medien/zoom_exponential:" + str(2), "UTF-8"))
             sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["ziel"]), "UTF-8"))
             sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
         elif vfx_index == 3:
@@ -142,7 +150,9 @@ def visueller_effekt(vfx_index):
             sock.send(bytes("medien/ausw:" + str("1"), "UTF-8")) #einblenden auswertung-node
         elif vfx_index == 5:
             # Spiel auf "disconnected" stellen!
-            sock.send(bytes("medien/punkte/punkte:#see-base", "UTF-8"))
+            sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
+            sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
+            sock.send(bytes("medien/punkte/punkte:00:00", "UTF-8"))
             sock.send(bytes("medien/connected:False", "UTF-8"))
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
