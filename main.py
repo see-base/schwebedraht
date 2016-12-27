@@ -5,7 +5,7 @@
 #  Supersize Edition
 #
 from pygame import mixer
-import socket
+import socket, time
 import random
 from serial import Serial
 from sys import argv
@@ -17,12 +17,6 @@ vfx = { "fail" : ["pesthorn.png"],
                     "start" : [],
                     "ziel" : ["star.png"]
     }
-#messung zeit - beruehrt
-spieler{0: [0, 0],
-    1: [0,0],
-    2: [0,0]
-    3: [0,0]
-}
 
 sfx = [] # 0 = fail, 1 = start, 2 = bonus, 3 = ende
 ID, INT, BAT, F = (None, None, None, None)
@@ -116,26 +110,32 @@ def effekt(segment):
 def visueller_effekt(vfx_index):
     if debug: print("ID: " + str(ID))
     prefix = False
+    s = False
     if ID ==  spieler_liste[0][0]:
         if debug: print("Spieler 1")
         prefix = spieler_liste[0][1] + "-"
+        s = 0
     elif ID == spieler_liste[1][0]:
         prefix = spieler_liste[1][1] + "-"
         if debug: print("Spieler 2")
+        s = 1
     elif ID == spieler_liste[2][0]:
         prefix = spieler_liste[2][1] + "-"
         if debug: print("Spieler 3")
+        s = 2
     else:
         prefix = spieler_liste[3][1] + "-"
         if debug: print("Spieler 4" + str(spieler_liste[3][0]))
+        s = 3
 
     try: 
         if debug: print("Prefix: "+prefix)
         if vfx_index == 0:
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
-            sock.send(bytes("medien/zoom_exponential:" + str(0), "UTF-8"))
+            sock.send(bytes("medien/zoom_exponential:" + str(random.randint(0,2)), "UTF-8"))
             sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["fail"]), "UTF-8"))
+            sock.send(bytes("medien/punkte/punkte:{}".formati(str("BERUEHRT!")), "UTF-8")) #spaeter: aktuelle zeit
             sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
         elif vfx_index == 1:
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
@@ -143,6 +143,7 @@ def visueller_effekt(vfx_index):
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) # ausblenden auswertung-node
             sock.send(bytes("medien/punkte/punkte:{}".format("Los gehts!"), "UTF-8")) #spaeter: aktuelle zeit
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8"))
+ 
         elif vfx_index == 2:
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
@@ -150,14 +151,15 @@ def visueller_effekt(vfx_index):
             sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["ziel"]), "UTF-8"))
             sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
         elif vfx_index == 3:
-            sock.send(bytes("medien/punkte/punkte:" + str("Auswertung:"), "UTF-8"))
+            sock.send(bytes("medien/punkte/punkte:" + str("Ziel erreicht:"), "UTF-8"))
             sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) #ausblenden "See-Base"
+            sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["ziel"]), "UTF-8"))
             sock.send(bytes("medien/ausw:" + str("1"), "UTF-8")) #einblenden auswertung-node
         elif vfx_index == 5:
             # Spiel auf "disconnected" stellen!
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
-            sock.send(bytes("medien/punkte/punkte:00:00", "UTF-8"))
+            sock.send(bytes("medien/punkte/punkte:BERUEHRT!", "UTF-8"))
             sock.send(bytes("medien/connected:False", "UTF-8"))
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
