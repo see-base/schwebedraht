@@ -14,7 +14,7 @@ debug = False
 serial = True
 
 vfx = { "fail" : ["pesthorn.png"],
-                    "start" : [],
+                    "start" : ["start.png"],
                     "ziel" : ["star.png"]
     }
 
@@ -47,6 +47,9 @@ except:
     pass
 
 spieler_liste = [(42, "green"), (23, "red"), (66, "blue"), (34, "yellow")]
+startzeit = None
+letztezeit = 0
+zeit = 0
 
 def main():
     global ID, INT, BAT, F
@@ -57,7 +60,7 @@ def main():
         
             if INT == 2: # wenn draht beruehrt wurde
                 if F in range(380, 420): # frequenz um 100 khz, mit +-10 khz toleranz
-                    start
+                    #start
                     aktion(1) #uebergibt das segment als zahl
                 elif F in range(490, 510):
                     aktion(4)
@@ -134,8 +137,8 @@ def visueller_effekt(vfx_index):
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
             sock.send(bytes("medien/ausw:" + str("0"), "UTF-8")) #ausblenden auswertung-node
             sock.send(bytes("medien/zoom_exponential:" + str(random.randint(0,2)), "UTF-8"))
-            sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["fail"]), "UTF-8"))
-            sock.send(bytes("medien/punkte/punkte:{}".formati(str("BERUEHRT!")), "UTF-8")) #spaeter: aktuelle zeit
+            #sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["fail"]), "UTF-8"))
+            sock.send(bytes("medien/punkte/punkte:{}".format(str("BERUEHRT!")), "UTF-8")) #spaeter: aktuelle zeit
             sock.send(bytes("medien/zoom:" + str(1), "UTF-8"))
         elif vfx_index == 1:
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
@@ -154,7 +157,7 @@ def visueller_effekt(vfx_index):
             sock.send(bytes("medien/punkte/punkte:" + str("Ziel erreicht:"), "UTF-8"))
             sock.send(bytes("medien/hintergrund/alpha:" + str("0"), "UTF-8")) #ausblenden "See-Base"
             sock.send(bytes("medien/effekt/bildname:" + prefix + random.choice(vfx["ziel"]), "UTF-8"))
-            sock.send(bytes("medien/ausw:" + str("1"), "UTF-8")) #einblenden auswertung-node
+            i#sock.send(bytes("medien/ausw:" + str("1"), "UTF-8")) #einblenden auswertung-node
         elif vfx_index == 5:
             # Spiel auf "disconnected" stellen!
             sock.send(bytes("medien/hintergrund/alpha:" + str("1"), "UTF-8")) #einblenden "See-Base"
@@ -169,6 +172,18 @@ def visueller_effekt(vfx_index):
 def audio_effekt(sfx_index):
 	if len(sfx) > 0:
 		mixer.Sound.play(sfx[sfx_index])
+
+def get_time(segment):
+    global startzeit, letztezeit, zeit
+    if segment == 1:
+        letztezeit = 0
+        zeit = 0
+        startzeit = time.time()
+    if segment < 4:
+        letztezeit = time.time() - startzeit
+        if letztezeit >= 0.1:
+            zeit += letztezeit
+            letztezeit = 0
 
 for i in argv:
     if i in ["-h", "--help"]:

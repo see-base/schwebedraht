@@ -9,7 +9,7 @@ local video = resource.load_video{
 }
 alpha = 1
 titel = "Schwebedraht"
-subtitel = "Ein gemeinsammes Projekt"
+subtitel = "Ein gemeinsames Projekt"
 subtitel2 = "des Hackerspaces see-base"
 
 util.data_mapper { --Daten via UDP Empfangen
