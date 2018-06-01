@@ -19,10 +19,10 @@ spielNameZusatz = "Ein Spiel der see-base"
 version = "0.5"
 
 segmente = {
-    "start": [12],
-    "bonus": [18, 24, 29, 33],
-    "fail": [16, 22, 26, 31, 35],
-    "ende": [37]
+    "start": [37],
+    "bonus": [33, 29, 18 ],
+    "fail": [35, 31, 22, 16],
+    "ende": [12]
 }
 
 startzeit = 0.0

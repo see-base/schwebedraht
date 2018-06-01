@@ -12,15 +12,13 @@ Jedes der Segmente ist über GPIO mit dem Raspberry Pi verbunden. Dadurch werden
 
 | Funktion       | Segment Nr. | Farbe GPIO Pin | PIN Raspberry Pi **2** |
 | ---------------|:------------| :------------: | :-------:|
-| Spiel starten  | 0           | Mintgruen      | `Pin 12` |
-| WANDler (`Ground`)| 1        | Blau           | `Pin 14` |
-| Erstes Segment | 2           | Lila           | `Pin 16` |
-| Bonus #1       | 3           | Grau           | `Pin 18` |
-| Zweites Segment| 4           | Weiss          | `Pin 22` |
-| Bonus #2       | 5           | Schwarz        | `Pin 24` |
-| Drittes Segment| 6           | Braun          | `Pin 26` |
-| Bonus #3       | 7           | Rot            | `Pin 29` |
-| Viertes Segment| 8           | Orange         | `Pin 31` |
-| Bonus #4       | 9           | Gelb           | `Pin 33` |
-| Letztes Segment| 10          | Schwarz-Gelb   | `Pin 35` |
-| Spiel beenden  | 11          | Gelb-Schwarz   | `Pin 37` |
+| WANDler (GND)  | 0           |                | `Pin  6` |
+| Start-Segment  | 1           |                | `Pin 37` |
+| Malus #1       | 2           |                | `Pin 35` |
+| Bonus #1       | 3           |                | `Pin 33` |
+| Malus #2       | 4           |                | `Pin 31` |
+| Bonus #2       | 5           |                | `Pin 29` |
+| Malus #3       | 6           |                | `Pin 22` |
+| Bonus #3       | 7           |                | `Pin 18` |
+| Malus #4       | 8           |                | `Pin 16` |
+| Stopp-Segment  | 9           |                | `Pin 12` |
