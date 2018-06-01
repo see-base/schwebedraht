@@ -80,8 +80,13 @@ def main():
                     	# Zeitstempel machen
                     	get_time(key, pin)
                     	
+                    	# TODO: Punkte ermitteln
+                    	
             			# Effekt spielen
                         effekt(key)
+                        
+                        # TODO: Endsequenz (Auswertung, Rangliste, etc.) und
+                        #       Reset-Funktion einbauen
                         
                         sleep(0.2)
                     else:
@@ -89,6 +94,8 @@ def main():
                         if key == "start":
                         	get_time(key, pin)
                             running = True
+                    
+                    # TODO: Idle-Animationen (Rangliste) einbauen
 
 
 # Speichert die Pin-ID und die Zeit seit dem Spielstart in zeiten_liste
@@ -133,6 +140,7 @@ def effekt(name):
 
 	elif name == "stopp":
 		print("Spiele Stopp-Effekt...")
-		#TODO Endanimation erstellen
+		# TODO Endanimation erstellen
 
-
+# TODO: Kommandozeilenargumente auswerten (Hilfe, Version) und verschiedene Modi
+#       (Ohne Ton, Verbose, Demo, Simulation ohne Raspi) einbauen.
