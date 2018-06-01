@@ -16,8 +16,11 @@ def init_gpio():
     print("GPIOs bereit")
 
 def main():
+    init_gpio()
     while True:
         for key, value in segmente.items():
             for pin in value:
                 if not GPIO.input(pin):
                     print("Pin {} berührt -> {}".format(pin, key)
+
+main()
