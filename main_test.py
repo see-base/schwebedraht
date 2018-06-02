@@ -17,9 +17,9 @@ sock = None # UDP-Socket
 #mixer = None #Pygame Audio Mixer
 
 segmente = {
-    "start": [37]
-    "bonus": [33, 29, 18]
-    "malus": [35, 31, 22, 16]
+    "start": [37],
+    "bonus": [33, 29, 18],
+    "malus": [35, 31, 22, 16],
     "stopp": [12]
 }
 
@@ -41,7 +41,7 @@ def ib_send(data):
 
 # Mit Pygame-Mixer Sound spielen
 def mixer_play(data):
-    mixer.Sound.play(mixer.Sound(data)
+    mixer.Sound.play(mixer.Sound(data))
 
 # --- Initialisierung --- #
 
@@ -177,7 +177,7 @@ def set_score():
 # Spielt den jeweiligen Soundeffekt über Pygame Mixer ab
 def play_sfx(name):
     if name == "start":
-        print("Spiele Start-Sound"...)
+        print("Spiele Start-Sound...")
 
         mixer_play("medien/start.wav")
 
@@ -200,7 +200,7 @@ def play_sfx(name):
 def play_vfx(name):
 
     if name == "start":
-        print("Zeige Start-Animation"...)
+        print("Zeige Start-Animation...")
 
         ib_send("medien/ausw:0")
         ib_send("medien/punkte/punkte:{} | {}".format(punkte, beruehrt))
@@ -211,7 +211,7 @@ def play_vfx(name):
 
         ib_send("medien/zoom_exponential:0")
         ib_send("medien/effekt/bildname:pesthoernchen.png")
-        ib_send("medien/zoom:1)
+        ib_send("medien/zoom:1")
 
     elif name == "bonus":
         print("Zeige Bonus-Animation...")
