@@ -59,8 +59,8 @@ def init_gpio():
 def init_socket():
     global sock
 
-    sock = socket.socket(socket.AF_INET, socket_DGRAM)
-    sock.connect(("127.0.0.1", "4444"))
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.connect(("127.0.0.1", 4444))
 
     ib_send("medien/connected:True")
     ib_send("medien/punkte/punkte:#see-base")
@@ -99,6 +99,27 @@ def main():
     #init_audio()
 
     # Spiel starten
+
+    # Simulation
+    while True:
+        x = int(input())
+        for key, pins in segmente.items():
+            if x in pins:
+                if running:
+                    set_time(key, x)
+                    set_score()
+                    play_vfx(key)
+                    if key == "stopp":
+                        reset_game()
+                        sleep(2.0)
+                else:
+                    if key == "start":
+                        reset_game()
+                        running = True
+                        set_time(key, x)
+                        play_vfx(key)
+    exit()
+
     while True:
 
         for key, value in segmente.items():
@@ -132,7 +153,7 @@ def main():
                             
                             running = True
                             set_time(key, pin)
-                            effekt(key)
+                            play_vfx(key)
 
                     # TODO: Idle-Animationen (Rangliste) einbauen
 
@@ -157,6 +178,10 @@ def set_time(name, pin):
 
 def set_score():
     global beruehrt, punkte, p_faktor, zeiten_liste
+
+    neue_punkte = 0
+    delta = "-"
+    beruehrt = 0
 
     pin1, zeit1 = zeiten_liste[-1] # Aktueller Zeitstempel
     pin2, zeit2 = zeiten_liste[-2] # Vorheriger Zeitstempel
@@ -183,6 +208,9 @@ def set_score():
         p_faktor = p_faktor // 2
         beruehrt += 1
 
+    print("Punkte: {} (+{}), Zeitdelta: {}, Punkte-Faktor: {}, Berührungen: {}"
+        .format(punkte, neue_punkte, delta, p_faktor, beruehrt))
+
     # TODO: Spezialzüge wie:
     #       - nur Bonussegmente berührt
     #       - von hinten nach vorne gespielt (start-3-2-1-ziel)
@@ -190,28 +218,26 @@ def set_score():
 
     ib_send("medien/punkte/punkte:{} | {}".format(punkte, beruehrt))
 
-    print("Punkte: {} (+{}), Zeitdelta: {}, Punkte-Faktor: {}, Berührungen: {}"
-        .format(punkte, neue_punkte, delta, p_faktor, beruehrt))
 
 # Spielt den jeweiligen Soundeffekt über Pygame Mixer ab
 #def play_sfx(name):
 #    if name == "start":
-#        print("Spiele Start-Sound...")
+#        print("Spiele Start-Sound")
 #
 #        mixer_play("medien/start.wav")
 #
 #    elif name == "malus":
-#        print("Spiele Malus-Sound...")
+#        print("Spiele Malus-Sound")
 #
 #        mixer_play("medien/fail.wav")
 #
 #    elif name == "bonus":
-#        print("Spiele Bonus-Sound...")
+#        print("Spiele Bonus-Sound")
 #
 #        mixer_play("medien/bonus.wav")
 #
 #    elif name == "stopp":
-#        print("Spiele Stopp-Sound...")
+#        print("Spiele Stopp-Sound")
 #
 #        mixer_play("medien/end.wav")
 
@@ -219,29 +245,30 @@ def set_score():
 def play_vfx(name):
 
     if name == "start":
-        print("Zeige Start-Animation...")
+        print("Zeige Start-Animation")
 
         ib_send("medien/ausw:0")
         #ib_send("medien/highscore:0")
         ib_send("medien/punkte/punkte:{} | {}".format(punkte, beruehrt))
         ib_send("medien/hintergrund/alpha:1")
+        #TODO: Start Animation
 
     elif name == "malus":
-        print("Zeige Malus-Animation...")
+        print("Zeige Malus-Animation")
 
         ib_send("medien/zoom_exponential:0")
         ib_send("medien/effekt/bildname:pesthoernchen.png")
         ib_send("medien/zoom:1")
 
     elif name == "bonus":
-        print("Zeige Bonus-Animation...")
+        print("Zeige Bonus-Animation")
 
         ib_send("medien/zoom_exponential:1")
         ib_send("medien/effekt/bildname:star.png")
         ib_send("medien/zoom:1")
 
     elif name == "stopp":
-        print("Zeige Stopp-Animation...")
+        print("Zeige Stopp-Animation")
         
         gen_highscore_list()
         
@@ -252,14 +279,14 @@ def play_vfx(name):
         #    ib_send("medien/highscore/top{}:{}  -  {}".format(i, n, p))
 
 # Zufälligen Namen für die Highscoreliste erstellen
-def unique_nick():f
+def unique_nick():
     vokal = ["a", "e", "i", "o", "u"]
     nick = ( chr(randint(97, 122)).upper()
-        + choice(char)
+        + choice(vokal)
         + chr(randint(97, 122))
-        + choice(char)
+        + choice(vokal)
         + chr(randint(97, 122))
-        + choice(char) )
+        + choice(vokal) )
 
     return nick
 
