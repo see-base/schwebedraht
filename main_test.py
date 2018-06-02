@@ -30,7 +30,7 @@ punkte = 0
 p_faktor = 1
 beruehrt = 0
 
-highscore_liste = []
+highscore_list = []
 
 running = False
 
@@ -174,14 +174,13 @@ def set_time(name, pin):
     if name == "start" or zeit - zeiten_liste[-1][1] > 1:
         zeiten_liste.append((pin, zeit - startzeit))
 
-    print("Zeitstempel für Pin {} gesetzt: {}", pin, zeiten_liste[-1][1])
+    print("Zeitstempel für Pin {} gesetzt: {}".format(pin, zeiten_liste[-1][1]))
 
 def set_score():
     global beruehrt, punkte, p_faktor, zeiten_liste
 
     neue_punkte = 0
     delta = "-"
-    beruehrt = 0
 
     pin1, zeit1 = zeiten_liste[-1] # Aktueller Zeitstempel
     pin2, zeit2 = zeiten_liste[-2] # Vorheriger Zeitstempel
@@ -205,7 +204,8 @@ def set_score():
 
     # Wird ein Malussegment berührt, wird der Faktor halbiert
     elif pin1 in segmente["malus"]:
-        p_faktor = p_faktor // 2
+        if p_faktor > 1:
+            p_faktor = p_faktor // 2
         beruehrt += 1
 
     print("Punkte: {} (+{}), Zeitdelta: {}, Punkte-Faktor: {}, Berührungen: {}"
@@ -288,6 +288,8 @@ def unique_nick():
         + chr(randint(97, 122))
         + choice(vokal) )
 
+    print("Unique Nick generiert: {}".format(nick))
+
     return nick
 
 # Füge die Punkte der Highscoreliste hinzu.
@@ -296,13 +298,21 @@ def gen_highscore_list():
 
     nick = unique_nick()
 
-    highscore_list.append((punkte, nick))
-    highscore_list = highscore_list.sort()[::-1]
-    
-    # Nur die 10 besten bleiben bestehen.
-    if len(highscore_list) > 10:
+    highscore_list.append((punkte, nick)) # füge neues Nick/Punkte-Paar der Liste hinzu
+    highscore_list.sort() # sortiere die Liste
+    highscore_list = highscore_list[::-1] # kehre die reihenfolge um
+
+    print("{} hat {} Punkte erreicht."
+        .format(nick, punkte))
+
+    # Nur die 7 besten bleiben bestehen.
+    if len(highscore_list) > 7:
         highscore_list.pop()
 
+        print("{} hat hat es nicht in die Highscoreliste geschafft.".format(nick))
+
+    for i, (p, n) in enumerate(highscore_list):
+        print("Platz {}: {} mit {} Punkten.".format(i + 1, n, p))
 
 # TODO: Kommandozeilenargumente auswerten (Hilfe, Version) und verschiedene Modi
 #       (Ohne Ton, Verbose, Demo, Simulation ohne Raspi) einbauen.
