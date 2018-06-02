@@ -40,8 +40,8 @@ def ib_send(data):
     sock.send(bytes(data, "UTF-8"))
 
 # Mit Pygame-Mixer Sound spielen
-def mixer_play(data):
-    mixer.Sound.play(mixer.Sound(data))
+#def mixer_play(data):
+#    mixer.Sound.play(mixer.Sound(data))
 
 # --- Initialisierung --- #
 
@@ -72,6 +72,21 @@ def init_socket():
 #
 #   print("Audiosystem eingerichtet")
 
+def reset_game():
+    global startzeit, zeiten_liste, punkte, p_faktor, beruehrt, running
+
+    startzeit = 0.0
+    zeiten_liste = []
+
+    punkte = 0
+    p_faktor = 1
+    beruehrt = 0
+
+    running = False
+    
+    print("Spielwerte zurückgesetzt")
+
+
 # --- Hauptschleife --- #
 
 def main():
@@ -96,7 +111,7 @@ def main():
                         # Zeitstempel machen
                         set_time(key, pin)
 
-                        # TODO: Punkte ermitteln
+                        # Punkte ermitteln
                         set_score()
 
                         # Effekt erzeugen
@@ -109,9 +124,9 @@ def main():
                     else:
 
                         if key == "start":
+                            reset_game()
+                            
                             running = True
-                            # TODO: Reset-Funktion einbauen
-                            # (sonst kann es fehler mit der Zeitmessung geben!)
                             set_time(key, pin)
                             effekt(key)
 
@@ -175,26 +190,26 @@ def set_score():
         .format(punkte, neue_punkte, delta, p_faktor, beruehrt))
 
 # Spielt den jeweiligen Soundeffekt über Pygame Mixer ab
-def play_sfx(name):
-    if name == "start":
-        print("Spiele Start-Sound...")
-
-        mixer_play("medien/start.wav")
-
-    elif name == "malus":
-        print("Spiele Malus-Sound...")
-
-        mixer_play("medien/fail.wav")
-
-    elif name == "bonus":
-        print("Spiele Bonus-Sound...")
-
-        mixer_play("medien/bonus.wav")
-
-    elif name == "stopp":
-        print("Spiele Stopp-Sound...")
-
-        mixer_play("medien/end.wav")
+#def play_sfx(name):
+#    if name == "start":
+#        print("Spiele Start-Sound...")
+#
+#        mixer_play("medien/start.wav")
+#
+#    elif name == "malus":
+#        print("Spiele Malus-Sound...")
+#
+#        mixer_play("medien/fail.wav")
+#
+#    elif name == "bonus":
+#        print("Spiele Bonus-Sound...")
+#
+#        mixer_play("medien/bonus.wav")
+#
+#    elif name == "stopp":
+#        print("Spiele Stopp-Sound...")
+#
+#        mixer_play("medien/end.wav")
 
 # Sendet Daten an den Info-Beamer um dort einen Effekt zu spielen
 def play_vfx(name):
@@ -229,3 +244,13 @@ def play_vfx(name):
 #       (Ohne Ton, Verbose, Demo, Simulation ohne Raspi) einbauen.
 
 
+# Programm starten
+try:
+    print("Spiel wird gestartet...")
+    main()
+# Bei Unterbrechung den Info-Beamer zurücksetzen 
+except KeyboardInterrupt:
+    ib_send("medien/punkte/punkte:#see-base")
+    ib_send("medien/connected:False")
+    ib_send("medien/hintergrund/alpha:1")
+    ib_send("medien/ausw:0")
