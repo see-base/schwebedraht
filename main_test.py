@@ -30,6 +30,8 @@ punkte = 0
 p_faktor = 1
 beruehrt = 0
 
+highscore_liste = []
+
 running = False
 
 
@@ -118,6 +120,8 @@ def main():
                         #if audio: play_sfx(key)
                         play_vfx(key)
 
+                        if key == "stopp":
+                            reset_game()
                         # TODO: Endsequenz (Auswertung, Rangliste, etc.)
 
                         sleep(0.2)
@@ -218,6 +222,7 @@ def play_vfx(name):
         print("Zeige Start-Animation...")
 
         ib_send("medien/ausw:0")
+        #ib_send("medien/highscore:0")
         ib_send("medien/punkte/punkte:{} | {}".format(punkte, beruehrt))
         ib_send("medien/hintergrund/alpha:1")
 
@@ -237,11 +242,17 @@ def play_vfx(name):
 
     elif name == "stopp":
         print("Zeige Stopp-Animation...")
+        
+        gen_highscore_list()
+        
+        # TODO: Highscore-Node im Info-Beamer erstellen
+        #ib_send("medien/highscore:1")
+        
+        #for i, (p, n) in enumerate(highscore_list):
+        #    ib_send("medien/highscore/top{}:{}  -  {}".format(i, n, p))
 
-        # TODO Endanimation erstellen
-
-def unique_nick():
-
+# Zufälligen Namen für die Highscoreliste erstellen
+def unique_nick():f
     vokal = ["a", "e", "i", "o", "u"]
     nick = ( chr(randint(97, 122)).upper()
         + choice(char)
@@ -251,6 +262,19 @@ def unique_nick():
         + choice(char) )
 
     return nick
+
+# Füge die Punkte der Highscoreliste hinzu.
+def gen_highscore_list():
+    global highscore_list, punkte
+
+    nick = unique_nick()
+
+    highscore_list.append((punkte, nick))
+    highscore_list = highscore_list.sort()[::-1]
+    
+    # Nur die 10 besten bleiben bestehen.
+    if len(highscore_list) > 10:
+        highscore_list.pop()
 
 
 # TODO: Kommandozeilenargumente auswerten (Hilfe, Version) und verschiedene Modi
