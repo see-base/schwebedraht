@@ -8,7 +8,7 @@
 import RPi.GPIO as GPIO
 import socket
 from time import time, sleep
-from random import randint
+from random import randint, choice
 #from pygame import mixer
 
 # --- Globale Variablen --- #
@@ -239,6 +239,19 @@ def play_vfx(name):
         print("Zeige Stopp-Animation...")
 
         # TODO Endanimation erstellen
+
+def unique_nick():
+
+    vokal = ["a", "e", "i", "o", "u"]
+    nick = ( chr(randint(97, 122)).upper()
+        + choice(char)
+        + chr(randint(97, 122))
+        + choice(char)
+        + chr(randint(97, 122))
+        + choice(char) )
+
+    return nick
+
 
 # TODO: Kommandozeilenargumente auswerten (Hilfe, Version) und verschiedene Modi
 #       (Ohne Ton, Verbose, Demo, Simulation ohne Raspi) einbauen.
