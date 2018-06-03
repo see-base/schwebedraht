@@ -93,33 +93,15 @@ def reset_game():
 
 def main():
     global running, zeiten_liste
-    # Spiel initialisieren
+
+# Spiel initialisieren
     init_gpio()
     init_socket()
     #init_audio()
 
+    simulator()
+
     # Spiel starten
-
-    # Simulation
-    while True:
-        x = int(input())
-        for key, pins in segmente.items():
-            if x in pins:
-                if running:
-                    set_time(key, x)
-                    set_score()
-                    play_vfx(key)
-                    if key == "stopp":
-                        reset_game()
-                        sleep(2.0)
-                else:
-                    if key == "start":
-                        reset_game()
-                        running = True
-                        set_time(key, x)
-                        play_vfx(key)
-    exit()
-
     while True:
 
         for key, value in segmente.items():
@@ -155,7 +137,35 @@ def main():
                             set_time(key, pin)
                             play_vfx(key)
 
-                    # TODO: Idle-Animationen (Rangliste) einbauen
+
+# Simulierte GPIO-Pin Eingabe mit der Tastatur für Debuggingzwecke.
+def simulator():
+    global running, zeiten_liste
+
+    # Simulation
+    while True:
+
+        x = int(input())
+        
+        for key, pins in segmente.items():
+
+            if x in pins:
+
+                if running:
+                    set_time(key, x)
+                    set_score()
+                    play_vfx(key)
+
+                    if key == "stopp":
+                        reset_game()
+                        sleep(2.0)
+                else:
+
+                    if key == "start":
+                        reset_game()
+                        running = True
+                        set_time(key, x)
+                        play_vfx(key)
 
 
 # --- Funktionen für die Spiellogik --- #
